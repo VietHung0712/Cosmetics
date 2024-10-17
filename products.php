@@ -30,7 +30,7 @@ $products = [];
 $result_product = $connect->query($sql_product);
 if ($result_product->num_rows > 0) {
     while ($row = $result_product->fetch_assoc()) {
-        $product = new Product($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['stt']);
+        $product = new Product($row['id'], $row['name'], $row['categories'], $row['classification'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['stt']);
         $products[] = $product;
     }
 }
@@ -46,6 +46,7 @@ if ($result_product->num_rows > 0) {
     <link rel="stylesheet" href="./assets/fontawesome-free-6.6.0-web/fontawesome-free-6.6.0-web/css/all.min.css">
     <link rel="stylesheet" href="./assets/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/head_footer.css">
     <title></title>
 </head>
 
@@ -64,7 +65,7 @@ if ($result_product->num_rows > 0) {
         </div>
         <div id="searchForm" class="filter__products">
             <div class="filter__products--list">
-                <h5 style="font-weight: bold; height: 50px;"><i class="fa-solid fa-list"></i> Danh mục</h5>
+                <h5 style="font-weight: bold; height: 8vh;"><i class="fa-solid fa-list"></i> Danh mục</h5>
                 <div class="filter__products--categories">
                     <a class='active' href='#searchForm'>Tất cả</a>
                     <?php
@@ -75,22 +76,22 @@ if ($result_product->num_rows > 0) {
                 </div>
             </div>
             <div class="filter__products--sort">
-                <h5 style="font-weight: bold; margin-right: 10px;"><i class="fa-solid fa-filter"></i> Sắp xếp theo</h5>
+                <h5 style="font-weight: bold; margin-right: 2vw;"><i class="fa-solid fa-filter"></i> Sắp xếp theo</h5>
 
                 <a href="#searchForm" class="active">Mới nhất</a>
                 <a href="#searchForm">Bán chạy</a>
                 <a href="#searchForm">Xếp hạng</a>
 
-                <h5 style="font-weight: bold; margin: 0 10px;"><i class="fa-solid fa-tag"></i> Giá</h5>
+                <h5 style="font-weight: bold; margin: 0 2vw;"><i class="fa-solid fa-tag"></i> Giá</h5>
 
-                <select name="sort__price" style="margin-left: 10px;padding: 10px;">
+                <select name="sort__price">
                     <option style="display: none;">____________</option>
                     <option style="background-color: white;">Giá: Thấp đến cao</option>
                     <option style="background-color: white;">Giá: Cao đến thấp</option>
                 </select>
             </div>
             <div class="filter__products--search">
-                <input style="border: none; border-bottom: 1px solid black; font-size: 1.2vw; text-align: center" type="text" name="search" placeholder="Tìm kiếm">
+                <input type="text" name="search" placeholder="Tìm kiếm">
                 <a href="#searchForm"><i class='fa-solid fa-magnifying-glass'></i></a>
             </div>
         </div>
@@ -128,7 +129,6 @@ if ($result_product->num_rows > 0) {
         </div>
     </div>
 </body>
-
 </html>
 <script src="./js/function.js"></script>
 <script>

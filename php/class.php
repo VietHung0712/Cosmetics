@@ -59,6 +59,7 @@ class Product{
     private $id;
     private $name;
     private $categories;
+    private $classification;
     private $brand;
     private $review;
     private $rank;
@@ -67,11 +68,12 @@ class Product{
     private $price;
     private $stt;
 
-    public function __construct($id, $name, $categories, $brand, $review, $rank, $sum, $sold, $price, $stt)
+    public function __construct($id, $name, $categories, $classification, $brand, $review, $rank, $sum, $sold, $price, $stt)
     {
         $this->id = $id;
         $this->name = $name;
         $this->categories = $categories;
+        $this->classification = $classification;
         $this->brand = $brand;
         $this->review = $review;
         $this->rank = $rank;
@@ -94,6 +96,11 @@ class Product{
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    public function getClassification()
+    {
+        return $this->classification;
     }
 
     public function getBrand()
@@ -136,9 +143,9 @@ class FlashDeal extends Product{
     private $starttime;
     private $endtime;
 
-    public function __construct($id, $name, $categories, $brand, $review, $rank, $sum, $sold, $price, $stt, $starttime, $endtime, $discount)
+    public function __construct($id, $name, $categories, $classification, $brand, $review, $rank, $sum, $sold, $price, $stt, $starttime, $endtime, $discount)
     {
-        parent::__construct($id, $name, $categories, $brand, $review, $rank, $sum, $sold, $price, $stt);
+        parent::__construct($id, $name, $categories,$classification, $brand, $review, $rank, $sum, $sold, $price, $stt);
 
         $this->discount = $discount;
         $this->starttime = $starttime;

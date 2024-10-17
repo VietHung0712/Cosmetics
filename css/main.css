@@ -6,6 +6,7 @@
 
 body,
 html {
+    font-size: 1vw;
     scroll-behavior: smooth;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
@@ -43,7 +44,7 @@ a {
     }
 
     & .product__img {
-        height: 70%;
+        height: 65%;
         width: 100%;
         background-position: center;
         background-repeat: no-repeat;
@@ -51,7 +52,7 @@ a {
     }
 
     & .product__info {
-        height: 30%;
+        height: 35%;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -82,90 +83,13 @@ section {
     margin: auto;
 }
 
-#head {
-    font-family: Arial, sans-serif;
-    height: 100px;
-    top: 0;
-    padding-top: 1%;
-    left: 0;
-    right: 0;
-    z-index: 5;
-    box-shadow: 0 0 10px 0px #000;
-    background-color: #fff;
-
-    &>div>div {
-        &>ul {
-            &>li {
-                list-style-type: none;
-                position: relative;
-
-                &>a {
-                    display: block;
-                    height: 100%;
-                    width: 100%;
-                    padding: 10px 20px;
-                    border-radius: 20px;
-                    text-decoration: none;
-                    text-align: center;
-                    color: black;
-                    font-weight: bold;
-                    font-size: 1.1vw;
-                    transition: all 300ms ease-in-out;
-
-                    &:hover {
-                        background-color: var(--bgcolor-);
-                    }
-
-                    &.active {
-                        background-color: var(--bgcolor-);
-                        color: white;
-                    }
-                }
-
-                &:hover ul {
-                    visibility: visible;
-                    opacity: 1;
-                }
-
-                &>ul {
-                    position: fixed;
-                    display: grid;
-                    grid-template-columns: repeat(5, 1fr);
-                    grid-auto-rows: 70px;
-                    box-shadow: 0 10px 10px 0 #0000005b;
-                    top: 90px;
-                    left: 25%;
-                    right: 25%;
-                    height: max-content;
-                    list-style-type: none;
-                    transition: all 300ms ease-in-out;
-                    align-items: center;
-                    background-color: white;
-                    visibility: hidden;
-                    opacity: 0;
-
-                    &>li {
-                        &>a {
-                            color: #000;
-
-                            &:hover {
-                                color: var(--bgcolor-);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 
 #main {
-    margin-top: 100px;
-
+    margin-top: 14vh;
     & #banner {
         overflow: hidden;
         position: relative;
-        height: calc(100vh - 100px);
+        height: calc(100vh - 14vh);
         display: flex;
         flex-direction: row;
 
@@ -231,7 +155,7 @@ section {
                 }
 
                 & a {
-                    padding: 10px 30px;
+                    padding: 1vw 2vw;
                     background-color: var(--bgcolor-);
                     border-radius: 20px;
                     color: white;
@@ -269,8 +193,8 @@ section {
 
             & button {
                 margin: 0.4vw;
-                width: 20px;
-                height: 20px;
+                width: 2vw;
+                height: 2vw;
                 border-radius: 50%;
                 background-color: #ffffff00;
                 border: 1px solid rgb(100, 100, 100);
@@ -284,7 +208,7 @@ section {
     }
 
     & #productNew {
-        padding-top: 100px;
+        padding-top: 14vh;
         width: 95%;
 
         & h1 {
@@ -302,9 +226,9 @@ section {
             margin: auto;
             height: 75%;
             display: grid;
-            gap: 10px;
+            gap: 1vw;
             grid-template-columns: repeat(5, 1fr);
-            grid-auto-rows: 420px;
+            grid-auto-rows: 60vh;
         }
     }
 
@@ -353,10 +277,10 @@ section {
 
                 &>div {
                     color: white;
-                    margin: 10px;
+                    margin: 1vw;
                     font-weight: bold;
-                    padding: 10px;
-                    border: 5px solid white;
+                    padding: 1vw;
+                    border: 0.4vw solid white;
                 }
             }
         }
@@ -383,13 +307,12 @@ section {
     }
 
     & #topbuy {
-        padding: top 100px;
+        padding-top: 14vh;
         height: 170vh;
-
         & h1 {
-            height: 30vh;
+            height: 20vh;
             width: 100%;
-            line-height: 40vh;
+            line-height: 20vh;
             font-weight: bold;
             text-transform: uppercase;
             text-align: center;
@@ -434,7 +357,7 @@ section {
     & .leftMenu {
         z-index: 4;
         position: fixed;
-        top: 100px;
+        top: 14vh;
         bottom: 0;
         left: 0;
         width: 4vw;
@@ -570,12 +493,12 @@ section {
 }
 
 #products {
-    margin-top: 100px;
+    margin-top: 14vh;
 
     & .banner {
         position: relative;
-        left: 200px;
-        width: calc(100% - 200px);
+        left: 14vw;
+        width: calc(100% - 14vw);
         height: 40vh;
 
         & .banner__img {
@@ -614,7 +537,7 @@ section {
         bottom: 0;
         position: fixed;
         z-index: 4;
-        height: 30vh;
+        height: 25vh;
         width: 100%;
         background-position: center;
         background-size: 100% 100%;
@@ -634,7 +557,7 @@ section {
             position: absolute;
             right: 0;
             border: 1px solid #0000005b;
-            padding: 10px;
+            padding: 5px 10px;
 
             &:hover{
                 color: var(--bgcolor-);
@@ -643,9 +566,9 @@ section {
     }
 
     & .filter__products {
-        padding-top: 100px;
-        width: calc(100% - 220px);
-        margin-left: 210px;
+        padding-top: 14vh;
+        width: calc(100% - 16vw);
+        margin-left: 15vw;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -653,7 +576,7 @@ section {
         & a {
             user-select: none;
             cursor: pointer;
-            width: 190px;
+            width: 13.5vw;
             color: black;
             text-align: start;
             padding: 10px 10px;
@@ -674,10 +597,10 @@ section {
 
         & .filter__products--list {
             position: fixed;
-            height: calc(100vh - 200px);
-            width: 200px;
-            top: 100px;
-            left: 0px;
+            height: calc(100vh - 28vh);
+            width: 14vw;
+            top: 14vh;
+            left: 0;
             display: flex;
             flex-direction: column;
             background-color: #fff;
@@ -710,8 +633,6 @@ section {
         }
 
         & .filter__products--sort {
-            z-index: 3;
-            height: 40px;
             display: flex;
             align-items: center;
 
@@ -721,6 +642,7 @@ section {
             }
 
             & select {
+                padding: 1vh 1vw;
                 &.active {
                     background-color: var(--bgcolor-);
                 }
@@ -728,16 +650,22 @@ section {
         }
 
         & .filter__products--search {
-            z-index: 3;
-            height: 40px;
             display: flex;
             align-items: center;
+
+            & input{
+                border: none;
+                border-bottom: 1px solid black;
+                font-size: 1.2vw;
+                text-align: center;
+                width: 15vw;
+            }
 
             a {
                 background-color: var(--bgcolor-);
                 color: white;
                 border: none;
-                padding: 10px;
+                padding: 0.7vw;
                 width: max-content;
             }
         }
@@ -746,22 +674,19 @@ section {
     & .products__main {
         height: max-content;
         min-height: 100vh;
-        width: calc(100% - 220px);
-        margin-left: 210px;
-        margin-top: 50px;
+        width: calc(100% - 16vw);
+        margin-left: 15vw;
+        margin-top: 8vh;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        grid-auto-rows: 420px;
-        gap: 50px;
+        grid-auto-rows: 60vh;
+        gap: 1vw;
     }
-
 }
 
-#footer {
-    width: 100%;
-    height: 50vh;
-    background-color: #000;
-}
+
+
+
 
 @keyframes translateToBottom {
     from {
