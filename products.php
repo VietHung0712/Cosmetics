@@ -1,19 +1,9 @@
 <?php
 require_once "./php/connect.php";
 require_once "./php/class.php";
-
-use ClassProject\Categories;
-use ClassProject\Product;
-
-$sql_categories = "SELECT * FROM categories";
-$categoriesArr = [];
-$result_categories = $connect->query($sql_categories);
-if ($result_categories->num_rows > 0) {
-    while ($row = $result_categories->fetch_assoc()) {
-        $categories = new Categories($row['id'], $row['name']);
-        $categoriesArr[] = $categories;
-    }
-}
+require_once "./php/Manager_Products.php";
+require_once "./php/Manager_Categories.php";
+require_once "./php/Manager_Brands.php";
 
 $indexFilterCategories = 0;
 if (isset($_GET['this_categories'])) {
@@ -22,16 +12,6 @@ if (isset($_GET['this_categories'])) {
         if ($categories->getId() == $filterCategories) {
             $indexFilterCategories = ($index + 1);
         }
-    }
-}
-
-$sql_product = "SELECT * FROM product ORDER BY stt DESC";
-$products = [];
-$result_product = $connect->query($sql_product);
-if ($result_product->num_rows > 0) {
-    while ($row = $result_product->fetch_assoc()) {
-        $product = new Product($row['id'], $row['name'], $row['categories'], $row['classification'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['stt']);
-        $products[] = $product;
     }
 }
 
@@ -51,22 +31,25 @@ if ($result_product->num_rows > 0) {
 </head>
 
 <body>
+
+    <?php require_once './php/head.php'; ?>
+
     <div id="products">
-        <div class="banner">
+        <div class="products__banner">
             <div class="banner__img" style="background-image: url(./image/products.jpg);"></div>
             <div class="banner__info flex-column justify-content-center align-items-center d-flex">
                 <h1>EVE</h1>
                 <p>"Đẹp mỗi ngày, tỏa sáng mọi khoảnh khắc."</p>
             </div>
         </div>
-        <div class="banner__product">
-            <a href="product_select.php?this_product=judydollPN01" style="background-image: url(./image/judydollPN01_banner.webp);"></a>    
+        <div class="products__bannerBottom">
+            <a href="product_select.php?this_product=judydollPN01" style="background-image: url(./image/judydollPN01_banner.webp);"></a>
             <button><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div id="searchForm" class="filter__products">
-            <div class="filter__products--list">
-                <h5 style="font-weight: bold; height: 8vh;"><i class="fa-solid fa-list"></i> Danh mục</h5>
-                <div class="filter__products--categories">
+        <div id="searchForm" class="products__filter">
+            <div class="products__filter--list">
+                <h5 style="font-weight: bold; height: 10vh; line-height: 15vh;"><i class="fa-solid fa-list"></i> Danh mục</h5>
+                <div class="products__filter--categories">
                     <a class='active' href='#searchForm'>Tất cả</a>
                     <?php
                     foreach ($categoriesArr as $categories) {
@@ -75,7 +58,7 @@ if ($result_product->num_rows > 0) {
                     ?>
                 </div>
             </div>
-            <div class="filter__products--sort">
+            <div class="products__filter--sort">
                 <h5 style="font-weight: bold; margin-right: 2vw;"><i class="fa-solid fa-filter"></i> Sắp xếp theo</h5>
 
                 <a href="#searchForm" class="active">Mới nhất</a>
@@ -90,12 +73,13 @@ if ($result_product->num_rows > 0) {
                     <option style="background-color: white;">Giá: Cao đến thấp</option>
                 </select>
             </div>
-            <div class="filter__products--search">
+            <div class="products__filter--search">
                 <input type="text" name="search" placeholder="Tìm kiếm">
                 <a href="#searchForm"><i class='fa-solid fa-magnifying-glass'></i></a>
             </div>
         </div>
         <div class="products__main">
+            <h4 style="display: none; font-size: 1vw;">Không tìm thấy kết quả nào!</h4>
             <?php
             foreach ($products as $product) {
                 $rank = $product->getRank();
@@ -109,7 +93,7 @@ if ($result_product->num_rows > 0) {
                 }
 
                 echo "<a href='product_select.php?this_product=" . $product->getId() . "' class='product transition'
-                    data-name='" . $product->getName() . "    '
+                    data-name='" . $product->getName() . "'
                     data-categories='" . $product->getCategories() . "'
                     data-rank='" . $product->getRank() . "'
                     data-sold='" . $product->getSold() . "'
@@ -127,8 +111,10 @@ if ($result_product->num_rows > 0) {
             }
             ?>
         </div>
+        <a class="ScrollToTop" href="#"><i class="fa-solid fa-angles-up"></i></a>
     </div>
 </body>
+
 </html>
 <script src="./js/function.js"></script>
 <script>
@@ -147,7 +133,7 @@ if ($result_product->num_rows > 0) {
 
 
     function filterSearch() {
-        const searchValue = $('.filter__products--search>input').value.trim().toLowerCase();
+        const searchValue = $('.products__filter--search>input').value.trim().toLowerCase();
         $$('.products__main .product').forEach((product) => {
             const matchesCategory = indexCategories === 0 || product.dataset.categories.includes(categories[indexCategories]);
             const matchesSearch = searchValue === '' || product.dataset.name.trim().toLowerCase().includes(searchValue);
@@ -157,14 +143,30 @@ if ($result_product->num_rows > 0) {
                 product.style.display = 'none';
             }
         });
+        if (emptyResult() === 0) {
+            $('.products__main>h4').style.display = 'block';
+        } else {
+            $('.products__main>h4').style.display = 'none';
+        }
+    }
+
+    function emptyResult() {
+        let indexProductsBlock = 0;
+        const brands = $$('.products__main .product');
+        brands.forEach(element => {
+            if (element.style.display != 'none') {
+                indexProductsBlock++;
+            }
+        });
+        return indexProductsBlock;
     }
 
     function chooseCategories() {
         <?php
         if ($indexFilterCategories != 0) {
             echo "
-            const categoriesElement = $$('.filter__products--categories>a');
-            $('.filter__products--categories>a.active').classList.remove('active');
+            const categoriesElement = $$('.products__filter--categories>a');
+            $('.products__filter--categories>a.active').classList.remove('active');
             EventAddActive(categoriesElement[$indexFilterCategories]);
             indexCategories = $indexFilterCategories;
             filterSearch();";
@@ -173,9 +175,9 @@ if ($result_product->num_rows > 0) {
     }
     chooseCategories()
 
-    $$('.filter__products--categories>a').forEach((element, index) => {
+    $$('.products__filter--categories>a').forEach((element, index) => {
         element.addEventListener('click', () => {
-            $('.filter__products--categories>a.active').classList.remove('active');
+            $('.products__filter--categories>a.active').classList.remove('active');
             EventAddActive(element);
             indexCategories = index;
             filterSearch();
@@ -183,14 +185,14 @@ if ($result_product->num_rows > 0) {
     });
 
 
-    $('.filter__products--search>a').addEventListener('click', filterSearch);
-    $('.filter__products--search>input').addEventListener('change', filterSearch);
+    $('.products__filter--search>a').addEventListener('click', filterSearch);
+    $('.products__filter--search>input').addEventListener('input', filterSearch);
 
-    $$('.filter__products--sort>a').forEach((element, index) => {
+    $$('.products__filter--sort>a').forEach((element, index) => {
         element.addEventListener('click', () => {
-            $('.filter__products--sort>a.active')?.classList.remove('active');
-            $('.filter__products--sort>select.active')?.classList.remove('active');
-            $('.filter__products--sort>select').selectedIndex = 0;
+            $('.products__filter--sort>a.active')?.classList.remove('active');
+            $('.products__filter--sort>select.active')?.classList.remove('active');
+            $('.products__filter--sort>select').selectedIndex = 0;
             EventAddActive(element);
 
             const productsElement = Array.from($$('.products__main .product'));
@@ -203,7 +205,7 @@ if ($result_product->num_rows > 0) {
                 productsElement.sort((a, b) => b.dataset.rank - a.dataset.rank);
             }
 
-            const parent = document.querySelector('.products__main');
+            const parent = $('.products__main');
             parent.innerHTML = '';
             productsElement.forEach((product) => {
                 parent.appendChild(product);
@@ -212,18 +214,18 @@ if ($result_product->num_rows > 0) {
     });
 
 
-    $('.filter__products--sort>select').addEventListener('change', (event) => {
+    $('.products__filter--sort>select').addEventListener('change', (event) => {
         const productsElement = Array.from($$('.products__main .product'));
-        $('.filter__products--sort>a.active')?.classList.remove('active');
-        EventAddActive($('.filter__products--sort>select'));
+        $('.products__filter--sort>a.active')?.classList.remove('active');
+        EventAddActive($('.products__filter--sort>select'));
 
-        if ($('.filter__products--sort>select').selectedIndex == 1) {
+        if ($('.products__filter--sort>select').selectedIndex == 1) {
             productsElement.sort((a, b) => a.dataset.price - b.dataset.price);
-        } else if ($('.filter__products--sort>select').selectedIndex == 2) {
+        } else if ($('.products__filter--sort>select').selectedIndex == 2) {
             productsElement.sort((a, b) => b.dataset.price - a.dataset.price);
         }
 
-        const parent = document.querySelector('.products__main');
+        const parent = $('.products__main');
         parent.innerHTML = '';
         productsElement.forEach((product) => {
             parent.appendChild(product);
@@ -266,7 +268,7 @@ if ($result_product->num_rows > 0) {
         });
     });
 
-    $('.banner__product>button').addEventListener('click', () => {
-        $('.banner__product').style.display = 'none';
+    $('.products__bannerBottom>button').addEventListener('click', () => {
+        $('.products__bannerBottom').style.display = 'none';
     })
 </script>
