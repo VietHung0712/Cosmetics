@@ -1,6 +1,6 @@
 <div id='head' class="w-100 position-fixed d-flex">
     <a href="./index.php" class=" d-flex h-100 justify-content-between align-items-center" style="background-color: #ec6b81; width: 15%; border-radius: 0 50px 50px 0;">
-        <img class="w-50 h-75 object-fit-contain" style="filter: drop-shadow(10px 10px 10px #000000a0);" src="./image/logo_project.png" alt="">
+        <img class="w-50 h-75 object-fit-contain" style="filter: drop-shadow(10px 10px 10px #000000a0);" src="./images/logo_project.png" alt="">
         <h1 style="height: 75%;font-weight: bold; font-size: 1.2vw; color: #fff; width: 50%; line-height: 75px;">EVE</h1>
     </a>
     <div class="head h-100  d-flex flex-row" style="width: 85%;">
@@ -12,7 +12,7 @@
                     <ul>
                         <?php
                         foreach ($categoriesArr as $categories) {
-                            echo "<li><a href='./products.php?this_categories=" . $categories->getId() . "'>" . $categories->getName() . "</a></li>";
+                            echo "<li><a href='./products.php?this_categories=" . $categories->getId() . "#searchForm'>" . $categories->getName() . "</a></li>";
                         }
                         ?>
                     </ul>

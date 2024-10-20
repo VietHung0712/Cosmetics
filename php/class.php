@@ -66,9 +66,10 @@ class Product{
     private $sum;
     private $sold;
     private $price;
+    private $image_url;
     private $stt;
 
-    public function __construct($id, $name, $categories, $classification, $brand, $review, $rank, $sum, $sold, $price, $stt)
+    public function __construct($id, $name, $categories, $classification, $brand, $review, $rank, $sum, $sold, $price, $image_url, $stt)
     {
         $this->id = $id;
         $this->name = $name;
@@ -80,6 +81,7 @@ class Product{
         $this->sum = $sum;
         $this->sold = $sold;
         $this->price = $price;
+        $this->image_url = $image_url;
         $this->stt = $stt;
     }
     
@@ -133,6 +135,11 @@ class Product{
         return $this->price;
     }
 
+    public function getImageUrl()
+    {
+        return $this->image_url;
+    }
+
     public function getStt(){
         return $this->stt;
     }
@@ -143,9 +150,9 @@ class FlashDeal extends Product{
     private $starttime;
     private $endtime;
 
-    public function __construct($id, $name, $categories, $classification, $brand, $review, $rank, $sum, $sold, $price, $stt, $starttime, $endtime, $discount)
+    public function __construct($id, $name, $categories, $classification, $brand, $review, $rank, $sum, $sold, $price, $image_url, $stt, $starttime, $endtime, $discount)
     {
-        parent::__construct($id, $name, $categories,$classification, $brand, $review, $rank, $sum, $sold, $price, $stt);
+        parent::__construct($id, $name, $categories,$classification, $brand, $review, $rank, $sum, $sold, $price, $image_url, $stt);
 
         $this->discount = $discount;
         $this->starttime = $starttime;

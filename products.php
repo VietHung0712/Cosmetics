@@ -15,6 +15,19 @@ if (isset($_GET['this_categories'])) {
     }
 }
 
+$productImage = [];
+foreach ($products as $index => $product) {
+    $sql = "SELECT image_url FROM product_image WHERE product = '" . $product->getId() . "'";
+    $result = $connect->query($sql);
+    $images = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $images[] = $row['image_url'];
+        }
+    }
+    $productImage[$index] = $images;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,14 +49,14 @@ if (isset($_GET['this_categories'])) {
 
     <div id="products">
         <div class="products__banner">
-            <div class="banner__img" style="background-image: url(./image/products.jpg);"></div>
+            <div class="banner__img" style="background-image: url(./images/products.jpg);"></div>
             <div class="banner__info flex-column justify-content-center align-items-center d-flex">
                 <h1>EVE</h1>
                 <p>"Đẹp mỗi ngày, tỏa sáng mọi khoảnh khắc."</p>
             </div>
         </div>
         <div class="products__bannerBottom">
-            <a href="product_select.php?this_product=judydollPN01" style="background-image: url(./image/judydollPN01_banner.webp);"></a>
+            <a href="product_select.php?this_product=judydollPN01" style="background-image: url(./images/judydollPN01_banner.webp);"></a>
             <button><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div id="searchForm" class="products__filter">
@@ -81,33 +94,35 @@ if (isset($_GET['this_categories'])) {
         <div class="products__main">
             <h4 style="display: none; font-size: 1vw;">Không tìm thấy kết quả nào!</h4>
             <?php
-            foreach ($products as $product) {
-                $rank = $product->getRank();
-                $star = "";
-                for ($i = 0; $i < 5; $i++) {
-                    if ($i < $rank) {
-                        $star .= "<i style='color: orange;' class='fa-solid fa-star'></i>";
-                    } else {
-                        $star .= "<i class='fa-regular fa-star'></i>";
+            if (count($products) > 0) {
+                foreach ($products as $index => $product) {
+                    $rank = $product->getRank();
+                    $star = "";
+                    for ($i = 0; $i < 5; $i++) {
+                        if ($i < $rank) {
+                            $star .= "<i style='color: orange;' class='fa-solid fa-star'></i>";
+                        } else {
+                            $star .= "<i class='fa-regular fa-star'></i>";
+                        }
                     }
-                }
 
-                echo "<a href='product_select.php?this_product=" . $product->getId() . "' class='product transition'
-                    data-name='" . $product->getName() . "'
-                    data-categories='" . $product->getCategories() . "'
-                    data-rank='" . $product->getRank() . "'
-                    data-sold='" . $product->getSold() . "'
-                    data-price='" . $product->getPrice() . "'
-                    data-stt='" . $product->getStt() . "'>
-                    <p></p>
-                    <div class='product__img transition' style='background-image: url(./image/" . $product->getId() . "_0.webp);'></div>
-                    <div class='product__info'>
-                        <h3>" . $product->getName() . "</h3>
-                        <h3>" . $star . "</h3>
-                        <h3>Đã bán: " . $product->getSold() . "</h3>
-                        <h4>Giá: " . $product->getPrice() / 1000 . " 000 VND</h4>
-                    </div>
-                </a>";
+                    echo "<a href='product_select.php?this_product=" . $product->getId() . "' class='product transition'
+                        data-name='" . $product->getName() . "'
+                        data-categories='" . $product->getCategories() . "'
+                        data-rank='" . $product->getRank() . "'
+                        data-sold='" . $product->getSold() . "'
+                        data-price='" . $product->getPrice() . "'
+                        data-stt='" . $product->getStt() . "'>
+                        <p></p>
+                        <div class='product__img transition' style='background-image: url(" . $product->getImageUrl() . ");'></div>
+                        <div class='product__info'>
+                            <h3>" . $product->getName() . "</h3>
+                            <h3>" . $star . "</h3>
+                            <h3>Đã bán: " . $product->getSold() . "</h3>
+                            <h4>Giá: " . $product->getPrice() / 1000 . " 000 VND</h4>
+                        </div>
+                    </a>";
+                }
             }
             ?>
         </div>
@@ -237,8 +252,8 @@ if (isset($_GET['this_categories'])) {
     const productImgs = [
         [
             <?php
-            foreach ($products as $index => $product) {
-                echo "'" . $product->getId() . "_0.webp'";
+            foreach ($products as $index => $item) {
+                echo "'" . $item->getImageUrl() . "'";
                 if ($index != count($products)) {
                     echo ",";
                 }
@@ -247,9 +262,13 @@ if (isset($_GET['this_categories'])) {
         ],
         [
             <?php
-            foreach ($products as $product) {
-                echo "'" . $product->getId() . "_1.webp'";
-                if ($i != 0) {
+            foreach ($productImage as $index => $item) {
+                if (isset($item[0])) {
+                    echo "'" . $item[0] . "'";
+                } else {
+                    echo "'" . $products[$index]->getImageUrl() . "'";
+                }
+                if ($index != count($productImage)) {
                     echo ",";
                 }
             }
@@ -260,11 +279,11 @@ if (isset($_GET['this_categories'])) {
     $$('.products__main .product').forEach((element, index) => {
         const productImg = $$('.products__main>.product>.product__img');
         element.addEventListener('mouseover', () => {
-            productImg[index].style.backgroundImage = `url(./image/${productImgs[1][index]})`;
+            productImg[index].style.backgroundImage = `url(${productImgs[1][index]})`;
         });
 
         element.addEventListener('mouseout', () => {
-            productImg[index].style.backgroundImage = `url(./image/${productImgs[0][index]})`;
+            productImg[index].style.backgroundImage = `url(${productImgs[0][index]})`;
         });
     });
 

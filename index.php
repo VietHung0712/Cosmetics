@@ -3,37 +3,62 @@ require_once "./php/connect.php";
 require_once "./php/class.php";
 require_once "./php/Manager_Brands.php";
 require_once "./php/Manager_Categories.php";
+require_once "./php/function.php";
 
 use ClassProject\Product;
 use ClassProject\FlashDeal;
 
 
 $sql_topbuy = "SELECT * FROM product ORDER BY sold desc LIMIT 4";
-
 $result_topbuy = $connect->query($sql_topbuy);
 if ($result_topbuy->num_rows > 0) {
     while ($row = $result_topbuy->fetch_assoc()) {
-        $topbuy = new Product($row['id'], $row['name'], $row['categories'], $row['classification'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['stt']);
+        $topbuy = new Product($row['id'], $row['name'], $row['categories'], $row['classification'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['image_url'], $row['stt']);
         $topbuys[] = $topbuy;
     }
 }
+$topbuysImage = [];
+foreach ($topbuys as $index => $topbuy) {
+    $sql = "SELECT image_url FROM product_image WHERE product = '" . $topbuy->getId() . "'";
+    $result = $connect->query($sql);
+    $images = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $images[] = $row['image_url'];
+        }
+    }
+    $topbuysImage[$index] = $images;
+}
+
 
 $sql_productNew = "SELECT * FROM product ORDER BY stt desc LIMIT 5";
-
 $result_productNew = $connect->query($sql_productNew);
 if ($result_productNew->num_rows > 0) {
     while ($row = $result_productNew->fetch_assoc()) {
-        $productNew = new Product($row['id'], $row['name'], $row['categories'], $row['classification'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['stt']);
+        $productNew = new Product($row['id'], $row['name'], $row['categories'], $row['classification'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['image_url'], $row['stt']);
         $productNews[] = $productNew;
     }
 }
 
-$sql_flashDeal = "SELECT p.*, f.discount, f.starttime, f.endtime FROM product p JOIN flash_deal f ON p.id = f.product WHERE NOW() BETWEEN f.starttime AND f.endtime";
+$productNewImage = [];
+foreach ($productNews as $index => $productNew) {
+    $sql = "SELECT image_url FROM product_image WHERE product = '" . $productNew->getId() . "'";
+    $result = $connect->query($sql);
+    $images = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $images[] = $row['image_url'];
+        }
+    }
+    $productNewImage[$index] = $images;
+}
 
+$imageFlashDeal = [];
+$sql_flashDeal = "SELECT p.*, f.discount, f.starttime, f.endtime FROM product p JOIN flash_deal f ON p.id = f.product WHERE NOW() BETWEEN f.starttime AND f.endtime";
 $result_flashDeal = $connect->query($sql_flashDeal);
 if ($result_flashDeal->num_rows > 0) {
     while ($row = $result_flashDeal->fetch_assoc()) {
-        $flashDeal = new FlashDeal($row['id'], $row['name'], $row['categories'], $row['classification'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['stt'], $row['starttime'], $row['endtime'], $row['discount']);
+        $flashDeal = new FlashDeal($row['id'], $row['name'], $row['categories'], $row['classification'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['image_url'], $row['stt'], $row['starttime'], $row['endtime'], $row['discount']);
     }
 }
 
@@ -58,25 +83,25 @@ if ($result_flashDeal->num_rows > 0) {
     <div id="main" class="w-100">
         <section id="banner">
             <div class="banner__border">
-                <img class="active" src="./image/perfectdiarySM01_2.webp" alt="">
-                <img src="./image/judydollPM01_1.webp" alt="">
-                <img src="./image/zeeseaKN01_1.webp" alt="">
+                <img class="active" src="./images/perfectdiarySM01_2.webp" alt="">
+                <img src="./images/judydollPM01_1.webp" alt="">
+                <img src="./images/zeeseaKN01_2.webp" alt="">
             </div>
             <div class="banner__slogan">
                 <span class="active">
                     <h3>Perfect Diary</h3>
                     <h2>Siêu mịn,<br>lâu trôi cao cấp</h2>
-                    <a href="product_select.php?this_product=">Mua ngay</a>
+                    <a href="product_select.php?this_product=perfectdiarySM01">Mua ngay</a>
                 </span>
                 <span>
                     <h3>Julydoll</h3>
                     <h2>Chuẩn tạo hiệu ứng cho<br>đôi má hồng</h2>
-                    <a href="product_select.php?this_product=">Mua ngay</a>
+                    <a href="product_select.php?this_product=judydollPM01">Mua ngay</a>
                 </span>
                 <span>
                     <h3>Zeesea</h3>
                     <h2>Che khuyết điểm<br>kiềm dầu hiệu quả</h2>
-                    <a href="product_select.php?this_product=">Mua ngay</a>
+                    <a href="product_select.php?this_product=zeeseaKN01">Mua ngay</a>
                 </span>
             </div>
             <div class="banner__button">
@@ -89,22 +114,30 @@ if ($result_flashDeal->num_rows > 0) {
             <h1>Sản Phẩm Mới <i class="fa-regular fa-newspaper"></i></h1>
             <div class="productNew__border">
                 <?php
-                for ($i = count($productNews) - 1; $i >= 0; $i--) {
-                    echo "<a href='product_select.php?this_product=" . $productNews[$i]->getId() . "' class='product transition'>
-                        <p>New</p>
-                        <div class='product__img transition' style='background-image: url(./image/" . $productNews[$i]->getId() . "_0.webp);'></div>
-                        <div class='product__info'>
-                                <h3>" . $productNews[$i]->getName() . "</h3>
-                                <h4>Giá: " . $productNews[$i]->getPrice() /1000 . " 000 VND</h4>
-                        </div>
-                    </a>";
+                if (count($productNews) > 0) {
+                    foreach ($productNews as $index => $product) {
+                        $image = "";
+                        if (isset($productNewImage[$index][0])) {
+                            $image = $productNewImage[$index][0];
+                        }
+                        echo "<a href='product_select.php?this_product=" . $product->getId() . "' class='product transition'>
+                            <p>New</p>
+                            <div class='product__img transition' style='background-image: url(" . $product->getImageUrl() . ");'></div>
+                            <div class='product__info'>
+                                    <h3>" . $product->getName() . "</h3>
+                                    <h4>Giá: " . $product->getPrice() / 1000 . " 000 VND</h4>
+                            </div>
+                        </a>";
+                    }
+                } else {
+                    echo "<h4>Không tìm thấy sản phẩm!</h4>";
                 }
                 ?>
             </div>
         </section>
         <section id="flashDeal" class="d-flex flex-row">
             <div class="d-flex flex-column align-items-center justify-content-center">
-                <img src="./image/flashdeal.webp" alt="">
+                <img src="./images/flashdeal.webp" alt="">
                 <div id="countdown">
                     <div class="countdownHours">00</div>:
                     <div class="countdownMinutes">00</div>:
@@ -127,9 +160,9 @@ if ($result_flashDeal->num_rows > 0) {
             <div>
                 <?php
                 if (isset($flashDeal)) {
-                    echo "<img src='./image/" . $flashDeal->getId() . "_1.webp' alt=''>";
+                    echo "<img src='" . $flashDeal->getImageUrl() . "' alt=''>";
                 } else {
-                    echo "<img src='./image/logo.png' alt=''>";
+                    echo "<img src='./images/logo.png' alt=''>";
                 }
                 ?>
 
@@ -140,20 +173,24 @@ if ($result_flashDeal->num_rows > 0) {
             <h1>Sản Phẩm Bán Chạy <i class="fa-solid fa-fire"></i></h1>
             <div class="topbuy__main d-flex flex-row">
                 <div class="topbuy__img overflow-hidden">
-                    <img class="transition" src="./image/topbuy_theme.jpg" alt="">
+                    <img class="transition" src="./images/topbuy_theme.jpg" alt="">
                 </div>
                 <div class="topbuy__list d-grid">
                     <?php
-                    for ($i = 0 ; $i < count($topbuys); $i++) {
-                        echo "<a href='product_select.php?this_product=" . $topbuys[$i]->getId() . "' class='product transition'>
-                        <p>Hot</p>
-                        <div class='product__img transition' style='background-image: url(./image/" . $topbuys[$i]->getId() . "_0.webp);'></div>
-                        <div class='product__info'>
-                                <h3>" . $topbuys[$i]->getName() . "</h3>
-                                <h3>Đã bán:" . $topbuys[$i]->getSold() . "</h3>
-                                <h4>Giá: " . $topbuys[$i]->getPrice() /1000 . " 000 VND</h4>
-                        </div>
-                    </a>";
+                    if (count($topbuys) > 0) {
+                        foreach ($topbuys as $index => $product) {
+                            echo "<a href='product_select.php?this_product=" . $product->getId() . "' class='product transition'>
+                            <p>Hot</p>
+                            <div class='product__img transition' style='background-image: url(" . $product->getImageUrl() . ");'></div>
+                            <div class='product__info'>
+                                    <h3>" . $product->getName() . "</h3>
+                                    <h3>Đã bán:" . $product->getSold() . "</h3>
+                                    <h4>Giá: " . $product->getPrice() / 1000 . " 000 VND</h4>
+                            </div>
+                        </a>";
+                        }
+                    } else {
+                        echo "<h4>Không tìm thấy sản phẩm!</h4>";
                     }
                     ?>
                 </div>
@@ -188,7 +225,7 @@ if ($result_flashDeal->num_rows > 0) {
     </div>
     <a class="ScrollToTop" href="#"><i class="fa-solid fa-angles-up"></i></a>
     <div id="footer">
-        
+
     </div>
 </body>
 
@@ -236,9 +273,9 @@ if ($result_flashDeal->num_rows > 0) {
     const productNewImg = [
         [
             <?php
-            for ($i = count($productNews) - 1; $i >= 0; $i--) {
-                echo "'" . $productNews[$i]->getId() . "_0.webp'";
-                if ($i != 0) {
+            foreach ($productNews as $index => $item) {
+                echo "'" . $item->getImageUrl() . "'";
+                if ($index != count($productNews)) {
                     echo ",";
                 }
             }
@@ -246,9 +283,13 @@ if ($result_flashDeal->num_rows > 0) {
         ],
         [
             <?php
-            for ($i = count($productNews) - 1; $i >= 0; $i--) {
-                echo "'" . $productNews[$i]->getId() . "_1.webp'";
-                if ($i != 0) {
+            foreach ($productNewImage as $index => $item) {
+                if (isset($item[0])) {
+                    echo "'" . $item[0] . "'";
+                } else {
+                    echo "'" . $productNews[$index]->getImageUrl() . "'";
+                }
+                if ($index != count($productNewImage)) {
                     echo ",";
                 }
             }
@@ -259,11 +300,11 @@ if ($result_flashDeal->num_rows > 0) {
     $$('#productNew .product').forEach((element, index) => {
         const productImg = $$('.productNew__border>.product>.product__img');
         element.addEventListener('mouseover', () => {
-            productImg[index].style.backgroundImage = `url(./image/${productNewImg[1][index]})`;
+            productImg[index].style.backgroundImage = `url(${productNewImg[1][index]})`;
         });
 
         element.addEventListener('mouseout', () => {
-            productImg[index].style.backgroundImage = `url(./image/${productNewImg[0][index]})`;
+            productImg[index].style.backgroundImage = `url(${productNewImg[0][index]})`;
         });
 
     });
@@ -271,9 +312,9 @@ if ($result_flashDeal->num_rows > 0) {
     const topbuyImg = [
         [
             <?php
-            for ($i = count($topbuys) - 1; $i >= 0; $i--) {
-                echo "'" . $topbuys[$i]->getId() . "_0.webp'";
-                if ($i != 0) {
+            foreach ($topbuys as $index => $item) {
+                echo "'" . $item->getImageUrl() . "'";
+                if ($index != count($topbuys)) {
                     echo ",";
                 }
             }
@@ -281,9 +322,13 @@ if ($result_flashDeal->num_rows > 0) {
         ],
         [
             <?php
-            for ($i = count($topbuys) - 1; $i >= 0; $i--) {
-                echo "'" . $topbuys[$i]->getId() . "_1.webp'";
-                if ($i != 0) {
+            foreach ($topbuysImage as $index => $item) {
+                if (isset($item[0])) {
+                    echo "'" . $item[0] . "'";
+                }else{
+                    echo "'" . $topbuys[$index]->getImageUrl() . "'";
+                }
+                if ($index != count($topbuysImage)) {
                     echo ",";
                 }
             }
@@ -294,11 +339,11 @@ if ($result_flashDeal->num_rows > 0) {
     $$('.topbuy__list .product').forEach((element, index) => {
         const productImg = $$('.topbuy__list>.product>.product__img');
         element.addEventListener('mouseover', () => {
-            productImg[index].style.backgroundImage = `url(./image/${topbuyImg[1][index]})`;
+            productImg[index].style.backgroundImage = `url(${topbuyImg[1][index]})`;
         });
 
         element.addEventListener('mouseout', () => {
-            productImg[index].style.backgroundImage = `url(./image/${topbuyImg[0][index]})`;
+            productImg[index].style.backgroundImage = `url(${topbuyImg[0][index]})`;
         });
     });
 

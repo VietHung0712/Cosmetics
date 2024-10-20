@@ -11,7 +11,7 @@ require_once "./php/Manager_Brands.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./image/logo_project.png">
+    <link rel="icon" href="./images/logo_project.png">
     <link rel="stylesheet" href="./assets/fontawesome-free-6.6.0-web/fontawesome-free-6.6.0-web/css/all.min.css">
     <link rel="stylesheet" href="./assets/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/main.css">
@@ -25,7 +25,7 @@ require_once "./php/Manager_Brands.php";
         <div class="brands__filter">
             <div class="brands__filter--search">
                 <input type="text" name="search" placeholder="Tìm kiếm">
-                <a href="#searchForm"><i class='fa-solid fa-magnifying-glass'></i></a>
+                <a href="#brands__list"><i class='fa-solid fa-magnifying-glass'></i></a>
             </div>
             <div class="brands__filter--sort">
                 <h5 style="font-weight: bold; font-size: 1.2vw;">Sắp xếp <i class="fa-solid fa-filter"></i></h5>
@@ -58,9 +58,9 @@ require_once "./php/Manager_Brands.php";
 
         <div class="brands__main">
             <div class="brands__banner">
-                <img class="active transition" src="./image/enchanteur_theme_0.webp" alt="">
-                <img class="transition" src="./image/aesturavn_theme_0.webp" alt="">
-                <img class="transition" src="./image/xMen_theme_0.webp" alt="" style="object-fit: cover;">
+                <img class="active transition" src="./images/enchanteur_theme_0.webp" alt="">
+                <img class="transition" src="./images/aesturavn_theme_0.webp" alt="">
+                <img class="transition" src="./images/xMen_theme_0.webp" alt="" style="object-fit: cover;">
                 <button class="transition"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
 
@@ -69,14 +69,16 @@ require_once "./php/Manager_Brands.php";
                 <h4 style="display: none; text-align: center;">Không tìm thấy kết quả nào!</h4>
                 <div class="brands__list--grid">
                     <?php
-                    foreach ($brandArr as $brand) {
-                        echo "<a href='brand_select.php?this_brand=" . $brand->getId() . "' class='brand transition'
-                        data-id='" . $brand->getId() . "'
-                        data-country='" . $brand->getAddress() . "'>
-                        <div class='brand__background' style='background-image: url(./image/" . $brand->getId() . "_background.webp);'></div>
-                        <img class='transition' src='./image/" . $brand->getId() . "_icon.webp' alt=''>
-                        <h5>" . $brand->getName() . "</h5>
-                    </a>";
+                    if (count($brandArr) > 0) {
+                        foreach ($brandArr as $brand) {
+                            echo "<a href='brand_select.php?this_brand=" . $brand->getId() . "' class='brand transition'
+                            data-id='" . $brand->getId() . "'
+                            data-country='" . $brand->getAddress() . "'>
+                            <div class='brand__background' style='background-image: url(./images/" . $brand->getId() . "_background.webp);'></div>
+                            <img class='transition' src='./images/" . $brand->getId() . "_icon.webp' alt=''>
+                            <h5>" . $brand->getName() . "</h5>
+                        </a>";
+                        }
                     }
                     ?>
                 </div>
