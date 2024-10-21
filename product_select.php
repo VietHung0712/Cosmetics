@@ -3,16 +3,19 @@ require_once "./php/connect.php";
 require_once "./php/class.php";
 require_once "./php/Manager_Brands.php";
 require_once "./php/Manager_Categories.php";
+require_once "./php/function.php";
 
 use ClassProject\Product;
 
+$productImage = [];
 if (isset($_GET['this_product'])) {
     $this_productID = $_GET['this_product'];
     $sql_product_select = "SELECT * FROM product WHERE id = '$this_productID'";
     $result_sql_product_select = $connect->query($sql_product_select);
     if ($result_sql_product_select->num_rows > 0) {
         while ($row = $result_sql_product_select->fetch_assoc()) {
-            $this_product = new Product($row['id'], $row['name'], $row['categories'], $row['classification'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['image_url'], $row['stt']);
+            $this_product = new Product($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['sum'], $row['price'], $row['image_url']);
+            $productImage = ArrayProductImages($connect, $row['id']);
         }
     }
 }
@@ -33,24 +36,25 @@ if (isset($_GET['this_product'])) {
 </head>
 
 <body>
-    <!-- <?php
+    <?php
             require_once "./php/head.php";
-            ?> -->
+            ?>
     <div id="product_select">
 
         <div class="product__preview">
             <div class="product__preview--img">
-                <img class="transition" src="./image/<?php echo $this_product->getId(); ?>_0.webp" alt="">
+                <img class="transition" src="<?php echo $this_product->getImageUrl(); ?>" alt="">
                 <div>
                     <?php
-                    echo "<img class='transition active' src='./image/" . $this_product->getId() . "_0.webp' alt=''>";
-                    for ($i = 1; $i < 3; $i++) {
-                        echo "<img class='transition' src='./image/" . $this_product->getId() . "_$i.webp' alt=''>";
+                    echo "<img class='transition active' src='" . $this_product->getImageUrl() . "' alt=''>";
+                    for ($i = 0; $i < count($productImage); $i++) {
+                        echo "<img class='transition' src='" . $productImage[$i] . "' alt=''>";
                     }
                     ?>
                 </div>
             </div>
             <div class="product__preview--info">
+                <h1>JUDYDOLL Son dưỡng có màu</h1>
                 
             </div>
         </div>
@@ -67,4 +71,5 @@ if (isset($_GET['this_product'])) {
         })
     });
 </script>
+
 </html>

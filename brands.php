@@ -58,9 +58,9 @@ require_once "./php/Manager_Brands.php";
 
         <div class="brands__main">
             <div class="brands__banner">
-                <img class="active transition" src="./images/enchanteur_theme_0.webp" alt="">
-                <img class="transition" src="./images/aesturavn_theme_0.webp" alt="">
-                <img class="transition" src="./images/xMen_theme_0.webp" alt="" style="object-fit: cover;">
+                <img class="active transition" src="./images/enchanteur_theme.webp" alt="">
+                <img class="transition" src="./images/aesturavn_theme.webp" alt="">
+                <img class="transition" src="./images/xMen_theme.webp" alt="" style="object-fit: cover;">
                 <button class="transition"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
 
@@ -74,8 +74,8 @@ require_once "./php/Manager_Brands.php";
                             echo "<a href='brand_select.php?this_brand=" . $brand->getId() . "' class='brand transition'
                             data-id='" . $brand->getId() . "'
                             data-country='" . $brand->getAddress() . "'>
-                            <div class='brand__background' style='background-image: url(./images/" . $brand->getId() . "_background.webp);'></div>
-                            <img class='transition' src='./images/" . $brand->getId() . "_icon.webp' alt=''>
+                            <div class='brand__background' style='background-image: url(" . $brand->getBackgroundUrl() . ");'></div>
+                            <img class='transition' src='" . $brand->getIconUrl() . "' alt=''>
                             <h5>" . $brand->getName() . "</h5>
                         </a>";
                         }

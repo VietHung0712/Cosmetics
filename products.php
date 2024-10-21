@@ -4,6 +4,7 @@ require_once "./php/class.php";
 require_once "./php/Manager_Products.php";
 require_once "./php/Manager_Categories.php";
 require_once "./php/Manager_Brands.php";
+require_once "./php/function.php";
 
 $indexFilterCategories = 0;
 if (isset($_GET['this_categories'])) {
@@ -19,13 +20,7 @@ $productImage = [];
 foreach ($products as $index => $product) {
     $sql = "SELECT image_url FROM product_image WHERE product = '" . $product->getId() . "'";
     $result = $connect->query($sql);
-    $images = [];
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $images[] = $row['image_url'];
-        }
-    }
-    $productImage[$index] = $images;
+    $productImage[$index] = ArrayProductImages($connect, $product->getId());
 }
 
 ?>
@@ -77,6 +72,7 @@ foreach ($products as $index => $product) {
                 <a href="#searchForm" class="active">Mới nhất</a>
                 <a href="#searchForm">Bán chạy</a>
                 <a href="#searchForm">Xếp hạng</a>
+                <a href="#searchForm">A->Z</a>
 
                 <h5 style="font-weight: bold; margin: 0 2vw;"><i class="fa-solid fa-tag"></i> Giá</h5>
 
@@ -96,29 +92,34 @@ foreach ($products as $index => $product) {
             <?php
             if (count($products) > 0) {
                 foreach ($products as $index => $product) {
-                    $rank = $product->getRank();
                     $star = "";
                     for ($i = 0; $i < 5; $i++) {
-                        if ($i < $rank) {
+                        if ($i < $rank[$index] - 1) {
                             $star .= "<i style='color: orange;' class='fa-solid fa-star'></i>";
+                        } else if ($i < $rank[$index]) {
+                            $star .= "<i style='color: orange;' class='fa-solid fa-star-half-stroke'></i>";
                         } else {
                             $star .= "<i class='fa-regular fa-star'></i>";
                         }
                     }
+                    $quantityItem = 0;
+                    if (isset($quantity[$index])) {
+                        $quantityItem = $quantity[$index];
+                    }
 
                     echo "<a href='product_select.php?this_product=" . $product->getId() . "' class='product transition'
+                        data-id='" . $product->getId() . "'
                         data-name='" . $product->getName() . "'
                         data-categories='" . $product->getCategories() . "'
-                        data-rank='" . $product->getRank() . "'
-                        data-sold='" . $product->getSold() . "'
+                        data-rank='" . $rank[$index] . "'
+                        data-sold='" . $quantityItem . "'
                         data-price='" . $product->getPrice() . "'
-                        data-stt='" . $product->getStt() . "'>
                         <p></p>
                         <div class='product__img transition' style='background-image: url(" . $product->getImageUrl() . ");'></div>
                         <div class='product__info'>
                             <h3>" . $product->getName() . "</h3>
                             <h3>" . $star . "</h3>
-                            <h3>Đã bán: " . $product->getSold() . "</h3>
+                            <h3>Đã bán: " . $quantityItem . "</h3>
                             <h4>Giá: " . $product->getPrice() / 1000 . " 000 VND</h4>
                         </div>
                     </a>";
@@ -213,11 +214,13 @@ foreach ($products as $index => $product) {
             const productsElement = Array.from($$('.products__main .product'));
 
             if (index == 0) {
-                productsElement.sort((a, b) => b.dataset.stt - a.dataset.stt);
+                productsElement.sort((a, b) => b.dataset.id - a.dataset.id);
             } else if (index == 1) {
                 productsElement.sort((a, b) => b.dataset.sold - a.dataset.sold);
             } else if (index == 2) {
                 productsElement.sort((a, b) => b.dataset.rank - a.dataset.rank);
+            } else if (index == 3) {
+                productsElement.sort((a, b) => a.dataset.name.localeCompare(b.dataset.name));
             }
 
             const parent = $('.products__main');

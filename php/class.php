@@ -1,20 +1,28 @@
 <?php
+
 namespace ClassProject;
 
-class Brand{
+class Brand
+{
     private $id;
     private $name;
     private $address;
     private $phone;
+    private $icon_url;
+    private $background_url;
+    private $theme_url;
 
-    public function __construct($id, $name, $address, $phone)
+    public function __construct($id, $name, $address, $phone, $icon_url, $background_url, $theme_url)
     {
         $this->id = $id;
         $this->name = $name;
         $this->address = $address;
         $this->phone = $phone;
+        $this->icon_url = $icon_url;
+        $this->background_url = $background_url;
+        $this->theme_url = $theme_url;
     }
-    
+
     public function getId()
     {
         return $this->id;
@@ -25,16 +33,34 @@ class Brand{
         return $this->name;
     }
 
-    public function getAddress(){
+    public function getAddress()
+    {
         return $this->address;
     }
 
-    public function getPhone(){
+    public function getPhone()
+    {
         return $this->phone;
+    }
+
+    public function getIconUrl()
+    {
+        return $this->icon_url;
+    }
+
+    public function getBackgroundUrl()
+    {
+        return $this->background_url;
+    }
+
+    public function getThemeUrl()
+    {
+        return $this->theme_url;
     }
 }
 
-class Categories{
+class Categories
+{
     private $id;
     private $name;
 
@@ -43,7 +69,7 @@ class Categories{
         $this->id = $id;
         $this->name = $name;
     }
-    
+
     public function getId()
     {
         return $this->id;
@@ -55,36 +81,29 @@ class Categories{
     }
 }
 
-class Product{
+class Product
+{
     private $id;
     private $name;
     private $categories;
-    private $classification;
     private $brand;
     private $review;
-    private $rank;
     private $sum;
-    private $sold;
     private $price;
     private $image_url;
-    private $stt;
 
-    public function __construct($id, $name, $categories, $classification, $brand, $review, $rank, $sum, $sold, $price, $image_url, $stt)
+    public function __construct($id, $name, $categories, $brand, $review, $sum, $price, $image_url)
     {
         $this->id = $id;
         $this->name = $name;
         $this->categories = $categories;
-        $this->classification = $classification;
         $this->brand = $brand;
         $this->review = $review;
-        $this->rank = $rank;
         $this->sum = $sum;
-        $this->sold = $sold;
         $this->price = $price;
         $this->image_url = $image_url;
-        $this->stt = $stt;
     }
-    
+
     public function getId()
     {
         return $this->id;
@@ -100,11 +119,6 @@ class Product{
         return $this->categories;
     }
 
-    public function getClassification()
-    {
-        return $this->classification;
-    }
-
     public function getBrand()
     {
         return $this->brand;
@@ -115,20 +129,12 @@ class Product{
         return $this->review;
     }
 
-    public function getRank()
-    {
-        return $this->rank;
-    }
 
     public function getSum()
     {
         return $this->sum;
     }
 
-    public function getSold()
-    {
-        return $this->sold;
-    }
 
     public function getPrice()
     {
@@ -139,20 +145,17 @@ class Product{
     {
         return $this->image_url;
     }
-
-    public function getStt(){
-        return $this->stt;
-    }
 }
 
-class FlashDeal extends Product{
+class FlashDeal extends Product
+{
     private $discount;
     private $starttime;
     private $endtime;
 
-    public function __construct($id, $name, $categories, $classification, $brand, $review, $rank, $sum, $sold, $price, $image_url, $stt, $starttime, $endtime, $discount)
+    public function __construct($id, $name, $categories, $brand, $review, $sum, $price, $image_url, $starttime, $endtime, $discount)
     {
-        parent::__construct($id, $name, $categories,$classification, $brand, $review, $rank, $sum, $sold, $price, $image_url, $stt);
+        parent::__construct($id, $name, $categories, $brand, $review, $sum, $price, $image_url);
 
         $this->discount = $discount;
         $this->starttime = $starttime;
@@ -174,4 +177,3 @@ class FlashDeal extends Product{
         return $this->endtime;
     }
 }
-?>

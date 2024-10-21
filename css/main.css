@@ -594,7 +594,6 @@ section {
             &.active {
                 background-color: var(--bgcolor-);
                 color: white;
-                font-weight: bold;
             }
         }
 

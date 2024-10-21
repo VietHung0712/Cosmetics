@@ -9,11 +9,13 @@ use ClassProject\Product;
 use ClassProject\FlashDeal;
 
 
-$sql_topbuy = "SELECT * FROM product ORDER BY sold desc LIMIT 4";
+
+$sql_topbuy = "SELECT p.*, SUM(si.quantity) AS total_quantity FROM product p JOIN sales_invoice_items si ON p.id = si.product GROUP BY p.id ORDER BY total_quantity DESC";
 $result_topbuy = $connect->query($sql_topbuy);
 if ($result_topbuy->num_rows > 0) {
     while ($row = $result_topbuy->fetch_assoc()) {
-        $topbuy = new Product($row['id'], $row['name'], $row['categories'], $row['classification'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['image_url'], $row['stt']);
+        $sold[] = $row['total_quantity'];
+        $topbuy = new Product($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['sum'], $row['price'], $row['image_url']);
         $topbuys[] = $topbuy;
     }
 }
@@ -31,11 +33,11 @@ foreach ($topbuys as $index => $topbuy) {
 }
 
 
-$sql_productNew = "SELECT * FROM product ORDER BY stt desc LIMIT 5";
+$sql_productNew = "SELECT * FROM product ORDER BY id desc LIMIT 5";
 $result_productNew = $connect->query($sql_productNew);
 if ($result_productNew->num_rows > 0) {
     while ($row = $result_productNew->fetch_assoc()) {
-        $productNew = new Product($row['id'], $row['name'], $row['categories'], $row['classification'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['image_url'], $row['stt']);
+        $productNew = new Product($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['sum'], $row['price'], $row['image_url']);
         $productNews[] = $productNew;
     }
 }
@@ -58,7 +60,7 @@ $sql_flashDeal = "SELECT p.*, f.discount, f.starttime, f.endtime FROM product p 
 $result_flashDeal = $connect->query($sql_flashDeal);
 if ($result_flashDeal->num_rows > 0) {
     while ($row = $result_flashDeal->fetch_assoc()) {
-        $flashDeal = new FlashDeal($row['id'], $row['name'], $row['categories'], $row['classification'], $row['brand'], $row['review'], $row['rank'], $row['sum'], $row['sold'], $row['price'], $row['image_url'], $row['stt'], $row['starttime'], $row['endtime'], $row['discount']);
+        $flashDeal = new FlashDeal($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['sum'], $row['price'], $row['image_url'], $row['starttime'], $row['endtime'], $row['discount']);
     }
 }
 
@@ -184,7 +186,7 @@ if ($result_flashDeal->num_rows > 0) {
                             <div class='product__img transition' style='background-image: url(" . $product->getImageUrl() . ");'></div>
                             <div class='product__info'>
                                     <h3>" . $product->getName() . "</h3>
-                                    <h3>Đã bán:" . $product->getSold() . "</h3>
+                                    <h3>Đã bán:" . $sold[$index] . "</h3>
                                     <h4>Giá: " . $product->getPrice() / 1000 . " 000 VND</h4>
                             </div>
                         </a>";
