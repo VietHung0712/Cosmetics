@@ -60,7 +60,7 @@ function viewPort(sections, items) {
 
 let topMenu = 0;
 const fileName = window.location.pathname.split('/').pop();
-if (fileName === 'products.php') {
+if (fileName === 'products.php' || fileName === 'product_select.php') {
     topMenu = 1;
 }else if (fileName === 'brands.php') {
     topMenu = 2;
@@ -68,7 +68,13 @@ if (fileName === 'products.php') {
     topMenu = 3;
 }else if (fileName === 'about.php') {
     topMenu = 4;
+}else if (fileName === 'profile.php') {
+    topMenu = 5;
+}else if (fileName === 'user_cart.php') {
+    topMenu = 6;
 }
+
+
 const topMenuItems = $$('.topMenu');
 topMenuItems.forEach(element => {
     window.addEventListener('load', function() {

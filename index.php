@@ -3,20 +3,27 @@ require_once "./php/connect.php";
 require_once "./php/class.php";
 require_once "./php/Manager_Brands.php";
 require_once "./php/Manager_Categories.php";
+require_once "./php/Manager_FlashDeal.php";
 require_once "./php/function.php";
 
 use ClassProject\Product;
-use ClassProject\FlashDeal;
+use ClassProject\ProductItem;
 
-
-
-$sql_topbuy = "SELECT p.*, SUM(si.quantity) AS total_quantity FROM product p JOIN sales_invoice_items si ON p.id = si.product GROUP BY p.id ORDER BY total_quantity DESC";
+$sql_topbuy = "SELECT p.*, SUM(si.quantity) AS total_quantity, pi.price, pi.attributes, pi.count
+    FROM product p
+    JOIN product_item pi ON p.id = pi.product
+    JOIN sales_invoice_items si ON pi.id = si.product_item
+    GROUP BY p.id, p.name
+    ORDER BY total_quantity DESC
+    LIMIT 4";
 $result_topbuy = $connect->query($sql_topbuy);
 if ($result_topbuy->num_rows > 0) {
     while ($row = $result_topbuy->fetch_assoc()) {
         $sold[] = $row['total_quantity'];
-        $topbuy = new Product($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['sum'], $row['price'], $row['image_url']);
+        $topbuy = new Product($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['image_url']);
         $topbuys[] = $topbuy;
+        $topbuyItem = new ProductItem($row['attributes'], $row['price'], $row['count']);
+        $topbuyItems[] = $topbuyItem;
     }
 }
 $topbuysImage = [];
@@ -33,11 +40,13 @@ foreach ($topbuys as $index => $topbuy) {
 }
 
 
-$sql_productNew = "SELECT * FROM product ORDER BY id desc LIMIT 5";
+$sql_productNew = "SELECT p.*, pi.attributes AS attributes, pi.price AS price, pi.count AS count FROM product p JOIN product_item pi ON pi.product = p.id GROUP BY p.id ORDER BY p.id DESC LIMIT 5";
 $result_productNew = $connect->query($sql_productNew);
 if ($result_productNew->num_rows > 0) {
     while ($row = $result_productNew->fetch_assoc()) {
-        $productNew = new Product($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['sum'], $row['price'], $row['image_url']);
+        $productNewItem =  new ProductItem($row['attributes'], $row['price'], $row['count']);
+        $productNewItems[] = $productNewItem;
+        $productNew = new Product($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['image_url']);
         $productNews[] = $productNew;
     }
 }
@@ -55,15 +64,6 @@ foreach ($productNews as $index => $productNew) {
     $productNewImage[$index] = $images;
 }
 
-$imageFlashDeal = [];
-$sql_flashDeal = "SELECT p.*, f.discount, f.starttime, f.endtime FROM product p JOIN flash_deal f ON p.id = f.product WHERE NOW() BETWEEN f.starttime AND f.endtime";
-$result_flashDeal = $connect->query($sql_flashDeal);
-if ($result_flashDeal->num_rows > 0) {
-    while ($row = $result_flashDeal->fetch_assoc()) {
-        $flashDeal = new FlashDeal($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['sum'], $row['price'], $row['image_url'], $row['starttime'], $row['endtime'], $row['discount']);
-    }
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,11 +71,12 @@ if ($result_flashDeal->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./image/logo_project.png">
+    <link rel="icon" href="./images/logo_project.png">
     <link rel="stylesheet" href="./assets/fontawesome-free-6.6.0-web/fontawesome-free-6.6.0-web/css/all.min.css">
     <link rel="stylesheet" href="./assets/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/head_footer.css">
+    <link rel="stylesheet" href="./css/style.css">
     <title></title>
 </head>
 
@@ -118,16 +119,12 @@ if ($result_flashDeal->num_rows > 0) {
                 <?php
                 if (count($productNews) > 0) {
                     foreach ($productNews as $index => $product) {
-                        $image = "";
-                        if (isset($productNewImage[$index][0])) {
-                            $image = $productNewImage[$index][0];
-                        }
                         echo "<a href='product_select.php?this_product=" . $product->getId() . "' class='product transition'>
                             <p>New</p>
                             <div class='product__img transition' style='background-image: url(" . $product->getImageUrl() . ");'></div>
                             <div class='product__info'>
                                     <h3>" . $product->getName() . "</h3>
-                                    <h4>Giá: " . $product->getPrice() / 1000 . " 000 VND</h4>
+                                    <h4>Giá: " . $productNewItems[$index]->getPrice() / 1000 . " 000 VND</h4>
                             </div>
                         </a>";
                     }
@@ -146,13 +143,13 @@ if ($result_flashDeal->num_rows > 0) {
                     <div class="countdownSeconds">00</div>
                 </div>
                 <?php
-                if (isset($flashDeal)) {
-                    echo "<h3 class='fw-bold text-white text-uppercase text-center'>" . $flashDeal->getName() . "</h3>
-                    <h2 class='fw-bold text-white text-center'>Từ " . $flashDeal->getStarttime() . " đến " . $flashDeal->getEndtime() . "</h2>
-                <h5 class='fw-bold text-white text-decoration-line-through'>" . $flashDeal->getPrice() . "đ </h5>
-                <h2 class='fw-bold text-white'>" . $flashDeal->getPrice() - $flashDeal->getPrice() * $flashDeal->getDiscount() / 100 . " đ</h2>
-                <h1 class='fw-bold text-white' style='font-size: 4vw;'>" . $flashDeal->getDiscount() . "%</h1>
-                <a style='color: red; background-color: white; font-weight: bold; padding: 10px 50px; border-radius: 20px;' href='product_select.php?this_product=" . $flashDeal->getId() . "'>Mua ngay</a>";
+                if (isset($flashDeals)) {
+                    echo "<h3 class='fw-bold text-white text-uppercase text-center'>" . $flashDeals[0]->getName() . "</h3>
+                    <h2 class='fw-bold text-white text-center'>Từ " . $flashDeals[0]->getStarttime() . " đến " . $flashDeals[0]->getEndtime() . "</h2>
+                <h5 class='fw-bold text-white text-decoration-line-through'>" . $flashDealPrices[0] . "đ </h5>
+                <h2 class='fw-bold text-white'>" . $flashDealPrices[0] - $flashDealPrices[0] * $flashDeals[0]->getDiscount() / 100 . " đ</h2>
+                <h1 class='fw-bold text-white' style='font-size: 4vw;'>" . $flashDeals[0]->getDiscount() . "%</h1>
+                <a style='color: red; background-color: white; font-weight: bold; padding: 10px 50px; border-radius: 20px;' href='product_select.php?this_product=" . $flashDeals[0]->getId() . "'>Mua ngay</a>";
                 } else {
                     echo "<h2 class='fw-bold text-white'>Hiện tại chưa có khuyến mãi!</h2>
                             <h2 class='fw-bold text-white'> Hãy chờ đến lượt tiếp theo!</h2>";
@@ -161,16 +158,41 @@ if ($result_flashDeal->num_rows > 0) {
             </div>
             <div>
                 <?php
-                if (isset($flashDeal)) {
-                    echo "<img src='" . $flashDeal->getImageUrl() . "' alt=''>";
+                if (isset($flashDeals)) {
+                    echo "<img src='" . $flashDeals[0]->getImageUrl() . "' alt=''>";
+                    if (count($flashDeals) > 1) {
+                        echo "<a class='flashDeal-more-btn transition' href='#flashDeal-more'>Xem thêm <i class='fa-solid fa-arrow-down'></i></a>";
+                    }
                 } else {
                     echo "<img src='./images/logo.png' alt=''>";
                 }
                 ?>
-
             </div>
+
         </section>
 
+        <div id="flashDeal-more" style="display: none; height: 0;">
+            <h1>Giảm giá <i class="fa-solid fa-hand-holding-dollar"></i></h1>
+            <div class="productNew__border">
+                <?php
+                if (isset($flashDeals)) {
+                    foreach ($flashDeals as $index => $product) {
+                        echo "<a href='product_select.php?this_product=" . $product->getId() . "' class='product transition'>
+                            <p>-" . $product->getDiscount() . "%</p>
+                            <div class='product__img transition' style='background-image: url(" . $product->getImageUrl() . ");'></div>
+                            <div class='product__info'>
+                                    <h3>" . $product->getName() . "</h3>
+                                    <h3 style='text-decoration: line-through;'>" . $flashDealPrices[$index] / 1000 . " 000 VND</h3>
+                                    <h4>Giá mới: " . $flashDealPrices[$index] * (100 - $product->getDiscount()) / 100  / 1000 . " 000 VND</h4>
+                            </div>
+                        </a>";
+                    }
+                } else {
+                    echo "<h5>Không có sản phẩm giảm giá!</h5>";
+                }
+                ?>
+            </div>
+        </div>
         <section id="topbuy">
             <h1>Sản Phẩm Bán Chạy <i class="fa-solid fa-fire"></i></h1>
             <div class="topbuy__main d-flex flex-row">
@@ -187,7 +209,7 @@ if ($result_flashDeal->num_rows > 0) {
                             <div class='product__info'>
                                     <h3>" . $product->getName() . "</h3>
                                     <h3>Đã bán:" . $sold[$index] . "</h3>
-                                    <h4>Giá: " . $product->getPrice() / 1000 . " 000 VND</h4>
+                                    <h4>Giá: " . $topbuyItems[$index]->getPrice() / 1000 . " 000 VND</h4>
                             </div>
                         </a>";
                         }
@@ -327,7 +349,7 @@ if ($result_flashDeal->num_rows > 0) {
             foreach ($topbuysImage as $index => $item) {
                 if (isset($item[0])) {
                     echo "'" . $item[0] . "'";
-                }else{
+                } else {
                     echo "'" . $topbuys[$index]->getImageUrl() . "'";
                 }
                 if ($index != count($topbuysImage)) {
@@ -403,4 +425,10 @@ if ($result_flashDeal->num_rows > 0) {
             $('.leftMenu>.leftMenu__border>.leftMenu__items').style.right = '100%';
         }
     });
+
+    $('.flashDeal-more-btn')?.addEventListener('click', () => {
+        $('#flashDeal-more').style.display = 'block';
+        $('#flashDeal-more').style.height = '100vh';
+        $('.flashDeal-more-btn').style.display = 'none';
+    })
 </script>

@@ -6,6 +6,7 @@ require_once "./php/Manager_Categories.php";
 require_once "./php/Manager_Brands.php";
 require_once "./php/function.php";
 
+
 $indexFilterCategories = 0;
 if (isset($_GET['this_categories'])) {
     $filterCategories = $_GET['this_categories'];
@@ -30,11 +31,12 @@ foreach ($products as $index => $product) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./image/logo_project.png">
+    <link rel="icon" href="./images/logo_project.png">
     <link rel="stylesheet" href="./assets/fontawesome-free-6.6.0-web/fontawesome-free-6.6.0-web/css/all.min.css">
     <link rel="stylesheet" href="./assets/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/head_footer.css">
+    <link rel="stylesheet" href="./css/style.css">
     <title></title>
 </head>
 
@@ -93,10 +95,10 @@ foreach ($products as $index => $product) {
             if (count($products) > 0) {
                 foreach ($products as $index => $product) {
                     $star = "";
-                    for ($i = 0; $i < 5; $i++) {
-                        if ($i < $rank[$index] - 1) {
+                    for ($i = 1; $i <= 5; $i++) {
+                        if ($i <= $rank[$index]) {
                             $star .= "<i style='color: orange;' class='fa-solid fa-star'></i>";
-                        } else if ($i < $rank[$index]) {
+                        } else if ($i > $rank[$index] && ($i - $rank[$index]) < 1) {
                             $star .= "<i style='color: orange;' class='fa-solid fa-star-half-stroke'></i>";
                         } else {
                             $star .= "<i class='fa-regular fa-star'></i>";
@@ -113,14 +115,14 @@ foreach ($products as $index => $product) {
                         data-categories='" . $product->getCategories() . "'
                         data-rank='" . $rank[$index] . "'
                         data-sold='" . $quantityItem . "'
-                        data-price='" . $product->getPrice() . "'
+                        data-price='" . $productsItems[$index]->getPrice() . "'
                         <p></p>
                         <div class='product__img transition' style='background-image: url(" . $product->getImageUrl() . ");'></div>
                         <div class='product__info'>
                             <h3>" . $product->getName() . "</h3>
                             <h3>" . $star . "</h3>
                             <h3>Đã bán: " . $quantityItem . "</h3>
-                            <h4>Giá: " . $product->getPrice() / 1000 . " 000 VND</h4>
+                            <h4>Giá: " . $productsItems[$index]->getPrice() / 1000 . " 000 VND</h4>
                         </div>
                     </a>";
                 }

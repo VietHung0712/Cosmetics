@@ -34,10 +34,14 @@
         <div class="h-100" style="width: 40%;">
             <ul class="d-flex h-100 w-100 flex-row justify-content-evenly align-items-center">
                 <li>
-                    <a href="./profile.php"><i class="fa-solid fa-user"></i></i></a>
+                    <a class="topMenu" href="./profile.php"><i class="fa-solid fa-user"></i></a>
+                    <ul style="left: 68%; display: flex; flex-direction: column; width: 15vw;">
+                        <li><a href="./profile.php">Tài khoản của tôi</a></li>
+                        <li><a href="./php/signout.php">Đăng xuất</a></li>
+                    </ul>
                 </li>
                 <li>
-                    <a class="position-relative" href=""><i class="fa-solid fa-cart-shopping"></i>
+                    <a class="topMenu" class="position-relative" href=""><i class="fa-solid fa-cart-shopping"></i>
                         <div class="mess__shopping position-absolute top-0 w-50 h-50" style="left: 70%; border-radius: 50%; background-color: #ec6b81;">1</div>
                     </a>
                 </li>

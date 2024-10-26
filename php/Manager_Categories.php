@@ -10,4 +10,5 @@ if ($result_categories->num_rows > 0) {
         $categoriesArr[] = $categories;
     }
 }
+
 ?>
