@@ -9,7 +9,7 @@ require_once "./php/function.php";
 use ClassProject\Product;
 use ClassProject\ProductItem;
 
-$sql_topbuy = "SELECT p.*, SUM(si.quantity) AS total_quantity, pi.price, pi.attributes, pi.count
+$sql_topbuy = "SELECT p.*, SUM(si.quantity) AS total_quantity, pi.id AS pi_id, pi.product AS pi_product, pi.price, pi.attributes, pi.count
     FROM product p
     JOIN product_item pi ON p.id = pi.product
     JOIN sales_invoice_items si ON pi.id = si.product_item
@@ -22,7 +22,7 @@ if ($result_topbuy->num_rows > 0) {
         $sold[] = $row['total_quantity'];
         $topbuy = new Product($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['image_url']);
         $topbuys[] = $topbuy;
-        $topbuyItem = new ProductItem($row['attributes'], $row['price'], $row['count']);
+        $topbuyItem = new ProductItem($row['pi_id'], $row['pi_product'], $row['attributes'], $row['price'], $row['count']);
         $topbuyItems[] = $topbuyItem;
     }
 }
@@ -40,11 +40,11 @@ foreach ($topbuys as $index => $topbuy) {
 }
 
 
-$sql_productNew = "SELECT p.*, pi.attributes AS attributes, pi.price AS price, pi.count AS count FROM product p JOIN product_item pi ON pi.product = p.id GROUP BY p.id ORDER BY p.id DESC LIMIT 5";
+$sql_productNew = "SELECT p.*, pi.id AS pi_id, pi.product AS pi_product, pi.attributes, pi.price, pi.count FROM product p JOIN product_item pi ON pi.product = p.id GROUP BY p.id ORDER BY p.id DESC LIMIT 5";
 $result_productNew = $connect->query($sql_productNew);
 if ($result_productNew->num_rows > 0) {
     while ($row = $result_productNew->fetch_assoc()) {
-        $productNewItem =  new ProductItem($row['attributes'], $row['price'], $row['count']);
+        $productNewItem =  new ProductItem($row['pi_id'], $row['pi_product'], $row['attributes'], $row['price'], $row['count']);
         $productNewItems[] = $productNewItem;
         $productNew = new Product($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['image_url']);
         $productNews[] = $productNew;
@@ -94,17 +94,17 @@ foreach ($productNews as $index => $productNew) {
                 <span class="active">
                     <h3>Perfect Diary</h3>
                     <h2>Siêu mịn,<br>lâu trôi cao cấp</h2>
-                    <a href="product_select.php?this_product=perfectdiarySM01">Mua ngay</a>
+                    <a href="product_select.php?this_product=2">Mua ngay</a>
                 </span>
                 <span>
                     <h3>Julydoll</h3>
                     <h2>Chuẩn tạo hiệu ứng cho<br>đôi má hồng</h2>
-                    <a href="product_select.php?this_product=judydollPM01">Mua ngay</a>
+                    <a href="product_select.php?this_product=2">Mua ngay</a>
                 </span>
                 <span>
                     <h3>Zeesea</h3>
                     <h2>Che khuyết điểm<br>kiềm dầu hiệu quả</h2>
-                    <a href="product_select.php?this_product=zeeseaKN01">Mua ngay</a>
+                    <a href="product_select.php?this_product=2">Mua ngay</a>
                 </span>
             </div>
             <div class="banner__button">

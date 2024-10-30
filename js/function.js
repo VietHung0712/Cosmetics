@@ -8,7 +8,7 @@ function EventAddActive(object){
     object.classList.add("active");
 }
 function EventRemoveActive(object){
-    object.classList.remove("active");
+    object?.classList.remove("active");
 }
 
 function scrollToCenter(element , container) {

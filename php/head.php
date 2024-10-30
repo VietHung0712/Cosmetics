@@ -1,3 +1,21 @@
+<?php
+session_start();
+$cart = null;
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+
+    $sql_cart = "SELECT COUNT(*) AS count FROM user_cart WHERE user = " . $user_id;
+
+    $result_cart = $connect->query($sql_cart);
+    if ($result_cart->num_rows > 0) {
+        while ($row = $result_cart->fetch_assoc()) {
+            $cart = $row['count'];
+        }
+    }
+}
+
+?>
+
 <div id='head' class="w-100 position-fixed d-flex">
     <a href="./index.php" class=" d-flex h-100 justify-content-between align-items-center" style="background-color: #ec6b81; width: 15%; border-radius: 0 50px 50px 0;">
         <img class="w-50 h-75 object-fit-contain" style="filter: drop-shadow(10px 10px 10px #000000a0);" src="./images/logo_project.png" alt="">
@@ -41,18 +59,9 @@
                     </ul>
                 </li>
                 <li>
-                    <a class="topMenu" class="position-relative" href=""><i class="fa-solid fa-cart-shopping"></i>
-                        <div class="mess__shopping position-absolute top-0 w-50 h-50" style="left: 70%; border-radius: 50%; background-color: #ec6b81;">1</div>
+                    <a class="topMenu" class="position-relative" href="./user_cart.php"><i class="fa-solid fa-cart-shopping"></i>
+                        <div class="mess__shopping position-absolute top-0 w-50 h-50" style="left: 70%; border-radius: 50%; background-color: #ec6b81;"><?php echo $cart; ?></div>
                     </a>
-                </li>
-                <li>
-                    <a class="position-relative" href=""><i class="fa-solid fa-bell"></i></i>
-                        <div class="mess__bell position-absolute top-0 w-50 h-50" style="left: 70%; border-radius: 50%; background-color: #ec6b81;">1</div>
-                    </a>
-                    <ul style="right: 1%; left: 80%; display: flex; flex-direction: column;">
-                        <li>Thông báo 1</li>
-                        <li>Thông báo 1</li>
-                    </ul>
                 </li>
             </ul>
         </div>

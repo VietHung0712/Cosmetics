@@ -79,29 +79,47 @@ class Categories
     {
         return $this->name;
     }
-
 }
 
-class ProductItem{
+class ProductItem
+{
+    private $id;
+    private $product;
     private $attributes;
     private $price;
     private $count;
 
-    public function __construct($attributes, $price, $count){
+    public function __construct($id, $product, $attributes, $price, $count)
+    {
+        $this->id = $id;
+        $this->product = $product;
         $this->attributes = $attributes;
         $this->price = $price;
         $this->count = $count;
     }
-    
-    public function getAttributes() {
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    public function getAttributes()
+    {
         return $this->attributes;
     }
 
-    public function getPrice() {
+    public function getPrice()
+    {
         return $this->price;
     }
 
-    public function getCount() {
+    public function getCount()
+    {
         return $this->count;
     }
 }
@@ -187,7 +205,8 @@ class FlashDeal extends Product
     }
 }
 
-class User {
+class User
+{
     private $id;
     private $displayName;
     private $userName;
@@ -198,7 +217,8 @@ class User {
     private $birthday;
     private $image_url;
 
-    public function __construct($id, $displayName, $userName, $passWord, $gender, $address, $phone, $birthday, $image_url) {
+    public function __construct($id, $displayName, $userName, $passWord, $gender, $address, $phone, $birthday, $image_url)
+    {
         $this->id = $id;
         $this->displayName = $displayName;
         $this->userName = $userName;
@@ -210,39 +230,48 @@ class User {
         $this->image_url = $image_url;
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getDisplayName() {
+    public function getDisplayName()
+    {
         return $this->displayName;
     }
 
-    public function getUserName() {
+    public function getUserName()
+    {
         return $this->userName;
     }
 
-    public function getPassWord() {
+    public function getPassWord()
+    {
         return $this->passWord;
     }
 
-    public function getGender() {
+    public function getGender()
+    {
         return $this->gender;
     }
 
-    public function getAddress() {
+    public function getAddress()
+    {
         return $this->address;
     }
 
-    public function getPhone() {
+    public function getPhone()
+    {
         return $this->phone;
     }
 
-    public function getBirthday() {
+    public function getBirthday()
+    {
         return $this->birthday;
     }
 
-    public function getImageUrl() {
+    public function getImageUrl()
+    {
         return $this->image_url;
     }
 }

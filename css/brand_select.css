@@ -1,0 +1,100 @@
+body,
+html {
+    background-color: rgb(236, 236, 236);
+}
+#brand_select {
+    margin-top: 13vh;
+
+    & .brand__head {
+        padding: 0 5%;
+        width: 100%;
+        height: 30vh;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #fff;
+
+        & .brand__head--avatar {
+            position: relative;
+            width: 30%;
+            height: 70%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+            & .brand__head--avatar-border {
+                z-index: 0;
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                top: 0;
+                left: 0;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                filter: brightness(50%);
+            }
+
+            & img {
+                z-index: 1;
+                height: 50%;
+                width: 50%;
+                border-radius: 50%;
+                object-fit: fill;
+            }
+
+            & p {
+                z-index: 1;
+                font-size: 1.2vw;
+                letter-spacing: 0.1vw;
+                color: white;
+                font-weight: bold;
+            }
+        }
+
+        & table{
+            width: 60%;
+            height: 70%;
+
+            & th{
+                width: 20%;
+            }
+        }
+    }
+
+    & .brand__body{
+        width: 90%;
+        margin: auto;
+
+        & img{
+            margin-top: 5vh;
+            width: 100%;
+            height: auto;
+        }
+
+        & .brand__products{
+            margin-top: 5vh;
+            width: 100%;
+            background-color: #fff;
+
+            &>h3{
+                width: 100%;
+                height: 10vh;
+                color: var(--bgcolor-);
+                text-align: center;
+                font-weight: bold;
+                line-height: 5vh;
+            }
+
+            & .brand__products--border{
+                width: 90%;
+                margin: auto;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                grid-auto-rows: 50vh;
+                gap: 2vw;
+                padding-bottom: 10vh;
+            }
+        }
+    }
+}

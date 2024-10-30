@@ -9,13 +9,17 @@ require_once "./php/function.php";
 
 use ClassProject\Product;
 use ClassProject\ProductItem;
-use ClassProject\User;
+
+session_start();
 
 if (isset($_GET['this_product'])) {
     $productImage = [];
+
     $this_productID = $_GET['this_product'];
 
-    $sql_product_select = "SELECT p.*, pi.price, pi.attributes, pi.count
+    $_SESSION['currentFileName'] = basename(__FILE__) . "?this_product=" . $this_productID;
+
+    $sql_product_select = "SELECT p.*, pi.price, pi.attributes, pi.count, pi.id AS pi_id, pi.product AS pi_product
         FROM product p 
         JOIN product_item pi ON p.id = pi.product WHERE p.id = '$this_productID'";
     $result_sql_product_select = $connect->query($sql_product_select);
@@ -23,7 +27,7 @@ if (isset($_GET['this_product'])) {
         while ($row = $result_sql_product_select->fetch_assoc()) {
             $this_product = new Product($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['image_url']);
             $productImage = ArrayProductImages($connect, $row['id']);
-            $this_productItems[] = new ProductItem($row['attributes'], $row['price'], $row['count']);
+            $this_productItems[] = new ProductItem($row['pi_id'], $row['pi_product'], $row['attributes'], $row['price'], $row['count']);
         }
     }
     $users_review = [];
@@ -61,44 +65,26 @@ if (isset($_GET['this_product'])) {
         }
     }
 
-    $star = "";
-    for ($i = 1; $i <= 5; $i++) {
-        if ($i <= $rank[$indexProduct]) {
-            $star .= "<i style='color: orange;' class='fa-solid fa-star'></i>";
-        } else if ($rank[$indexProduct] != 0 && $i > $rank[$indexProduct] && $i % $rank[$indexProduct] != 0) {
-            $star .= "<i style='color: orange;' class='fa-solid fa-star-half-stroke'></i>";
-        } else {
-            $star .= "<i class='fa-regular fa-star'></i>";
+    $productsLikeCategory = [];
+    foreach ($products as $item) {
+        if ($item->getCategories() == $this_product->getCategories()) {
+            $productsLikeCategory[] = $item;
+        }
+    }
+
+    $productsLikeBrand = [];
+    foreach ($products as $item) {
+        if ($item->getBrand() == $this_product->getBrand()) {
+            $productsLikeBrand[] = $item;
         }
     }
 
     $discount = 0;
-    if (count($flashDeals) > 0) {
+    if (isset($flashDeal) && count($flashDeals) > 0) {
         foreach ($flashDeals as $item) {
             if ($item->getId() == $this_productID) {
                 $discount = $item->getDiscount();
             }
-        }
-    }
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $sql_add =
-            "INSERT INTO user_cart (id, user, product, attributes, quantity, price) VALUES
-            ('',
-            1,
-            " . $this_product->getId() . ",
-            '" . $_POST['attributes'] . "',
-            " . $_POST['quantity'] . ",
-            " . $_POST['price'] . ")";
-        echo $sql_add;
-        $result = mysqli_query($connect, $sql_add);
-        if ($result) {
-            header("Location: user_cart.php?user_id=1");
-            exit();
-        } else {
-            echo "<script>
-                    alert('Thêm không thành công!');
-                </script>";
         }
     }
 }
@@ -137,10 +123,10 @@ if (isset($_GET['this_product'])) {
                     ?>
                 </div>
             </div>
-            <form class="product__preview--info" method="POST" action="">
+            <form class="product__preview--info" method="POST" action="./manager/add_to_cart.php?product_id=<?php echo $this_product->getId() ?>">
                 <table>
                     <caption><?php echo $this_product->getName(); ?></caption>
-                    <caption>(<?php echo ($rank[$indexProduct] / 1) . "/5) " . $star; ?> Đã bán: <?php echo $quantity[$indexProduct]; ?></caption>
+                    <caption>(<?php echo ($rank[$indexProduct] / 1) . "/5) " . RankNumberToStar($rank[$indexProduct]); ?> Đã bán: <?php echo $quantity[$indexProduct]; ?></caption>
                     <tr>
                         <th></th>
                         <td style="color: #ec6b81;">_________________________</td>
@@ -164,16 +150,12 @@ if (isset($_GET['this_product'])) {
                         ?>
                     </tr>
                     <tr>
-                        <th>Vận chuyển:</th>
-                        <td></td>
-                    </tr>
-                    <tr>
                         <th>Loại:</th>
                         <td class="attributes">
                             <select name="attributes" id="">
                                 <?php
                                 foreach ($this_productItems as $item) {
-                                    echo "<option value='" . $item->getAttributes() . "'>" . $item->getAttributes() . "</option>";
+                                    echo "<option value='" . $item->getId() . "'>" . $item->getAttributes() . "</option>";
                                 }
                                 ?>
                             </select>
@@ -186,7 +168,10 @@ if (isset($_GET['this_product'])) {
                     </tr>
                     <tr>
                         <th></th>
-                        <td><button class="transition" type="submit">Thêm vào giỏ hàng <i class='fa-solid fa-cart-plus'></i></button></td>
+                        <td>
+                            <button class="transition submitForm" type="submit">Thêm vào giỏ hàng <i class='fa-solid fa-cart-plus'></i></button>
+                            <a class="login" style="background-color: #ec6b81; color: #fff; padding: 1vh 2vw; font-weight: bold;" href="./signin.php">Đăng nhập</a>
+                        </td>
                         <td></td>
                     </tr>
                 </table>
@@ -198,20 +183,20 @@ if (isset($_GET['this_product'])) {
             </div>
             <div class="product__brand--name">
                 <h1><?php echo $brandArr[$indexBrand]->getName() ?></h1>
-                <a href="">Xem Shop <i class="fa-solid fa-shop"></i></a>
+                <a href="./brand_select.php?this_brand=<?php echo $this_product->getBrand() ?>">Xem Shop <i class="fa-solid fa-shop"></i></a>
             </div>
-            <a href=""><i class="fa-solid fa-arrow-right transition"></i></a>
+            <a href="./brand_select.php?this_brand=<?php echo $this_product->getBrand() ?>"><i class="fa-solid fa-arrow-right transition"></i></a>
         </div>
         <div class="product__details">
             <div class="product__details--button">
-                <button>Chi tiết sản phẩm</button>
-                <button>Đánh giá</button>
+                <button class="active">Chi tiết sản phẩm</button>
+                <button>Đánh giá sản phẩm</button>
             </div>
             <div class="product__details--display">
-                <div class="product__details--description">
-                    <h1><?php echo $this_product->getName() ?></h1>
+                <div class="product__details--item active">
+                    <h5><?php echo $this_product->getName() ?></h5>
                     <p>Thể loại: <?php echo $categoriesArr[$indexCategories]->getName() ?></p>
-                    <p>Thương hiệu: <a href=""><?php echo $brandArr[$indexBrand]->getName() ?></a></p>
+                    <p>Thương hiệu: <a href="./brand_select.php?this_brand=<?php echo $this_product->getBrand() ?>"><?php echo $brandArr[$indexBrand]->getName() ?></a></p>
                     <php>Phân loại:
                         <?php
                         foreach ($this_productItems as $item) {
@@ -222,18 +207,11 @@ if (isset($_GET['this_product'])) {
                         <p>Mô tả:</p>
                         <p><?php echo $this_product->getReview() ?></p>
                 </div>
-                <div class="product__details--review">
+                <div class="product__details--item">
                     <table>
                         <?php
                         foreach ($users_review as $item) {
-                            $star = "";
-                            for ($i = 0; $i < 5; $i++) {
-                                if ($i < $item[1]) {
-                                    $star .= "<i style='color: orange;' class='fa-solid fa-star'></i>";
-                                } else {
-                                    $star .= "<i class='fa-regular fa-star'></i>";
-                                }
-                            }
+
                             $userDisplayName;
                             foreach ($users as $user) {
                                 if ($item[0] == $user[0]) {
@@ -242,9 +220,12 @@ if (isset($_GET['this_product'])) {
                             }
                             echo "<tr>
                             <th>" . $userDisplayName . "</th>
-                            <td>" . $star . "</td>
-                            <td></td>
-                            <td></td>
+                            <td>" . RankNumberToStar($item[1]) . "</td>
+                            <td>" . $item[3] . "</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td colspan='3'>" . $item[2] . "</td>
                         </tr>";
                         }
                         ?>
@@ -255,10 +236,43 @@ if (isset($_GET['this_product'])) {
         <div class="product__category-like product__-like--list">
             <div class="product__-like--list-head">
                 <h1>Sản phẩm tương tự</h1>
+                <a href="./products.php?this_categories=<?php echo $this_product->getCategories(); ?>#searchForm">Xem tất cả</a>
+            </div>
+            <div class="product__-like--list-border">
+                <?php
+                if (count($productsLikeCategory) > 0) {
+                    foreach ($productsLikeCategory as $item) {
+                        echo "<a href='product_select.php?this_product=" . $item->getId() . "' class='product transition'>
+                        <p></p>
+                        <div class='product__img transition' style='background-image: url(" . $item->getImageUrl() . ");'></div>
+                        <div class='product__info'>
+                            <h3>" . $item->getName() . "</h3>
+                        </div>
+                    </a>";
+                    }
+                }
+                ?>
+            </div>
+        </div>
+        <div class="product__brand-like product__-like--list">
+            <div class="product__-like--list-head">
+                <h1>Sản phẩm khác của hãng</h1>
                 <a href="">Xem tất cả</a>
             </div>
             <div class="product__-like--list-border">
-
+                <?php
+                if (count($productsLikeBrand) > 0) {
+                    foreach ($productsLikeBrand as $item) {
+                        echo "<a href='product_select.php?this_product=" . $item->getId() . "' class='product transition'>
+                        <p></p>
+                        <div class='product__img transition' style='background-image: url(" . $item->getImageUrl() . ");'></div>
+                        <div class='product__info'>
+                            <h3>" . $item->getName() . "</h3>
+                        </div>
+                    </a>";
+                    }
+                }
+                ?>
             </div>
         </div>
     </div>
@@ -267,7 +281,7 @@ if (isset($_GET['this_product'])) {
 <script>
     $$('.product__preview--img>div>img').forEach(element => {
         element.addEventListener('click', () => {
-            $('.product__preview--img>div>img.active')?.classList.remove('active');
+            EventRemoveActive($('.product__preview--img>div>img.active'));
             $('.product__preview--img>img').src = element.src;
             EventAddActive(element);
         })
@@ -304,6 +318,28 @@ if (isset($_GET['this_product'])) {
         $('.price0').textContent = productItem[index][1] + "VND";
         $('.price1>input').value = productItem[index][1] * (100 - discount) / 100;
     })
+
+    $$('.product__details--button>button').forEach((element, index) => {
+        const details_items = $$('.product__details--item');
+        element.addEventListener('click', () => {
+            EventRemoveActive($('.product__details--button>button.active'));
+            EventRemoveActive($('.product__details--item.active'));
+            EventAddActive(element);
+            EventAddActive(details_items[index]);
+        })
+    });
+    <?php
+    if (isset($_SESSION['user_id'])) {
+        echo "let login_user = true;";
+    } else {
+        echo "let login_user = false;";
+    }
+    ?>
+    if (!login_user) {
+        $('.submitForm').style.display = 'none';
+    }else{
+        $('.login').style.display = 'none';
+    }
 </script>
 
 </html>

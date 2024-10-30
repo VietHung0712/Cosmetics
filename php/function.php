@@ -11,3 +11,18 @@ function ArrayProductImages($connect, $id)
     }
     return $images;
 }
+
+function RankNumberToStar($rank)
+{
+    $star = "";
+    for ($i = 1; $i <= 5; $i++) {
+        if ($i <= $rank) {
+            $star .= "<i style='color: orange;' class='fa-solid fa-star'></i>";
+        } else if ($i > $rank && ($i - $rank) < 1) {
+            $star .= "<i style='color: orange;' class='fa-solid fa-star-half-stroke'></i>";
+        } else {
+            $star .= "<i class='fa-regular fa-star'></i>";
+        }
+    }
+    return $star;
+}

@@ -94,16 +94,7 @@ foreach ($products as $index => $product) {
             <?php
             if (count($products) > 0) {
                 foreach ($products as $index => $product) {
-                    $star = "";
-                    for ($i = 1; $i <= 5; $i++) {
-                        if ($i <= $rank[$index]) {
-                            $star .= "<i style='color: orange;' class='fa-solid fa-star'></i>";
-                        } else if ($i > $rank[$index] && ($i - $rank[$index]) < 1) {
-                            $star .= "<i style='color: orange;' class='fa-solid fa-star-half-stroke'></i>";
-                        } else {
-                            $star .= "<i class='fa-regular fa-star'></i>";
-                        }
-                    }
+                    
                     $quantityItem = 0;
                     if (isset($quantity[$index])) {
                         $quantityItem = $quantity[$index];
@@ -120,7 +111,7 @@ foreach ($products as $index => $product) {
                         <div class='product__img transition' style='background-image: url(" . $product->getImageUrl() . ");'></div>
                         <div class='product__info'>
                             <h3>" . $product->getName() . "</h3>
-                            <h3>" . $star . "</h3>
+                            <h3>" . RankNumberToStar($rank[$index]) . "</h3>
                             <h3>Đã bán: " . $quantityItem . "</h3>
                             <h4>Giá: " . $productsItems[$index]->getPrice() / 1000 . " 000 VND</h4>
                         </div>

@@ -3,16 +3,17 @@
 use ClassProject\Product;
 use ClassProject\ProductItem;
 
-$sql_product = "SELECT p.*, pi.attributes, pi.price, pi.count FROM product p JOIN product_item pi ON p.id = pi.product GROUP BY p.id ORDER BY id DESC";
+$sql_product = "SELECT p.*, pi.id AS pi_id, pi.product AS pi_product, pi.attributes, pi.price, pi.count FROM product p JOIN product_item pi ON p.id = pi.product GROUP BY p.id ORDER BY id DESC";
 $products = [];
 $productItems = [];
+
 $result_product = $connect->query($sql_product);
 if ($result_product->num_rows > 0) {
     while ($row = $result_product->fetch_assoc()) {
         $product = new Product($row['id'], $row['name'], $row['categories'], $row['brand'], $row['review'], $row['image_url']);
         $products[] = $product;
-        $prodcutsItem = new ProductItem($row['attributes'], $row['price'], $row['count']);
-        $productsItems[] = $prodcutsItem;
+        $productsItem = new ProductItem($row['pi_id'], $row['pi_product'], $row['attributes'], $row['price'], $row['count']);
+        $productsItems[] = $productsItem;
     }
 }
 

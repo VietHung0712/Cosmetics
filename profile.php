@@ -2,8 +2,10 @@
 
 session_start();
 
+$_SESSION['currentFileName'] = basename(__FILE__);
+
 if (!isset($_SESSION['user_id'])) {
-    header("Location: signin.php");
+    header("Location: sign-in.html");
     exit();
 }
 $user_id = $_SESSION['user_id'];
@@ -26,7 +28,7 @@ if ($result_user->num_rows > 0) {
 $userPurchase = [];
 $sql_purchased = "SELECT
 	p.*,
-    sit.quantity, sit.price, sit.price AS price2,
+    sit.quantity, sit.price,
     si.time,
     pi.attributes
     
@@ -38,13 +40,14 @@ $sql_purchased = "SELECT
         product_item pi ON sit.product_item = pi.id
     JOIN 
         product p ON pi.product = p.id
-    WHERE si.user = " . $user_id;
+    WHERE si.user = " . $user_id . " ORDER BY sit.sales_invoices DESC";
 $result_purchased = $connect->query($sql_purchased);
 if ($result_purchased->num_rows > 0) {
     while ($row = $result_purchased->fetch_assoc()) {
-        $userPurchase[] = [$row['id'], $row['name'], $row['attributes'], $row['quantity'], $row['price2'], $row['time'], $row['image_url']];
+        $userPurchase[] = [$row['id'], $row['name'], $row['attributes'], $row['quantity'], $row['price'], $row['time'], $row['image_url']];
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -137,10 +140,10 @@ if ($result_purchased->num_rows > 0) {
             width: 70vw;
             height: 100%;
 
-            & .container__item{
+            & .container__item {
                 display: none;
 
-                &.active{
+                &.active {
                     display: block;
                 }
             }
@@ -185,7 +188,7 @@ if ($result_purchased->num_rows > 0) {
                 }
             }
 
-            & .user_profile{
+            & .user_profile {
                 max-height: 80%;
                 width: 100%;
                 margin-top: 5%;
@@ -194,21 +197,21 @@ if ($result_purchased->num_rows > 0) {
                     width: 100%;
                     border-collapse: collapse;
 
-                    & th{
+                    & th {
                         background-color: #ec6b81;
                         color: #fff;
                         width: 10%;
                     }
 
-                    & td{
+                    & td {
                         width: 70%;
-                        
-                        & input{
+
+                        & input {
                             height: 7vh;
                             width: 80%;
                         }
 
-                        & input[type='radio']{
+                        & input[type='radio'] {
                             height: 2vh;
                             width: 20%;
                         }
@@ -228,6 +231,42 @@ if ($result_purchased->num_rows > 0) {
                 }
             }
         }
+
+        & .review {
+            z-index: 4;
+            position: fixed;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #00000022;
+
+            &.active {
+                display: flex;
+            }
+
+            & .review__border {
+                position: relative;
+                width: 20%;
+                height: 40%;
+                background-color: #fff;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                & button {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    padding: 0.3vw;
+                    border: none;
+                }
+            }
+        }
     }
 </style>
 
@@ -236,7 +275,7 @@ if ($result_purchased->num_rows > 0) {
     <div id="container">
         <div class="leftMenu">
             <div class="user__display">
-                <img src="./images/ionia_emblem.png" alt="">
+                <img src="<?php echo $this_user->getImageUrl(); ?>" alt="">
                 <h3><?php echo $this_user->getDisplayName(); ?></h3>
             </div>
             <div class="leftMenu__function">
@@ -267,13 +306,27 @@ if ($result_purchased->num_rows > 0) {
                             ?>
                                     <tr>
                                         <td><img src="<?php echo $item[6]; ?>" alt=""></td>
-                                        <td><?php echo $item[1]; ?></td> <!-- Tên sản phẩm -->
-                                        <td><?php echo $item[2]; ?></td> <!-- Thuộc tính -->
-                                        <td><?php echo $item[3]; ?></td> <!-- Số lượng -->
-                                        <td><?php echo $item[4]; ?></td> <!-- Giá -->
-                                        <td><?php echo $item[5]; ?></td> <!-- Thời gian -->
-                                        <td><a style="text-decoration: underline;" href="./product_select.php?this_product=<?php echo $item[0]; ?>">Xem</a></td>
+                                        <td><?php echo $item[1]; ?></td>
+                                        <td><?php echo $item[2]; ?></td>
+                                        <td><?php echo $item[3]; ?></td>
+                                        <td><?php echo $item[4]; ?></td>
+                                        <td><?php echo $item[5]; ?></td>
+                                        <td>
+                                            <a style="text-decoration: underline; color: white; background-color: green; padding: 5px;" href="./product_select.php?this_product=<?php echo $item[0]; ?>">Xem</a>
+                                            <a class="btnReview" style="text-decoration: underline; color: white; background-color: orange; padding: 5px;">Đánh giá</a>
+                                        </td>
                                     </tr>
+                                    <div class="review">
+                                        <div class="review__border">
+                                            <form action="./manager/user_review.php?this_product=<?php echo $item[0]; ?>" method="POST">
+                                                Xếp hạng: <span>1<input type="range" name="rating" min="1" max="5" value="5">5</span><br>
+                                                Phản hồi: <textarea name="text"></textarea> <br>
+
+                                                <button type="button">X</button>
+                                                <input type="submit" value="Xác nhận">
+                                            </form>
+                                        </div>
+                                    </div>
                             <?php
                                 }
                             } else {
@@ -294,8 +347,8 @@ if ($result_purchased->num_rows > 0) {
                     <tr>
                         <th>Giới tinh</th>
                         <td>
-                            <input type="radio" name="gender" value="Nam" <?php if($this_user->getGender() == 'Nam') echo 'checked'; ?>>Nam
-                            <input type="radio" name="gender" value="Nữ" <?php if($this_user->getGender() == 'Nữ') echo 'checked'; ?>>Nữ
+                            <input type="radio" name="gender" value="Nam" <?php if ($this_user->getGender() == 'Nam') echo 'checked'; ?>>Nam
+                            <input type="radio" name="gender" value="Nữ" <?php if ($this_user->getGender() == 'Nữ') echo 'checked'; ?>>Nữ
                         </td>
                     </tr>
                     <tr>
@@ -333,6 +386,19 @@ if ($result_purchased->num_rows > 0) {
             EventAddActive(container__items[index]);
         })
     });
+
+    $$('.btnReview').forEach((element, index) => {
+        const review = $$('.review');
+        element.addEventListener('click', () => {
+            EventAddActive(review[index]);
+        })
+    })
+    $$('.review button').forEach((element, index) => {
+        const review = $$('.review');
+        element.addEventListener('click', () => {
+            EventRemoveActive(review[index]);
+        })
+    })
 </script>
 
 </html>
