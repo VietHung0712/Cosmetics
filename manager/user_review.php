@@ -2,7 +2,7 @@
 require_once "../php/connect.php";
 
 date_default_timezone_set('Asia/Ho_Chi_Minh');
-session_start();
+
 $user_id = $_SESSION['user_id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_GET['this_product'])) {

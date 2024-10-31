@@ -1,19 +1,19 @@
 <?php
-
-session_start();
-
-$_SESSION['currentFileName'] = basename(__FILE__);
-
-if (!isset($_SESSION['user_id'])) {
-    header("Location: sign-in.html");
-    exit();
-}
-$user_id = $_SESSION['user_id'];
-
 require_once "./php/connect.php";
 require_once "./php/class.php";
 require_once "./php/Manager_Brands.php";
 require_once "./php/Manager_Categories.php";
+
+
+$_SESSION['currentFileName'] = basename(__FILE__);
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: sign-in.php");
+    exit();
+}
+$user_id = $_SESSION['user_id'];
+
+
 
 use ClassProject\User;
 
@@ -193,42 +193,102 @@ if ($result_purchased->num_rows > 0) {
                 width: 100%;
                 margin-top: 5%;
 
-                & table {
+
+                table {
                     width: 100%;
+                    margin: 20px auto;
                     border-collapse: collapse;
-
-                    & th {
-                        background-color: #ec6b81;
-                        color: #fff;
-                        width: 10%;
-                    }
-
-                    & td {
-                        width: 70%;
-
-                        & input {
-                            height: 7vh;
-                            width: 80%;
-                        }
-
-                        & input[type='radio'] {
-                            height: 2vh;
-                            width: 20%;
-                        }
-                    }
-
-                    & td,
-                    & th {
-                        height: 7vh;
-                        padding: 0 5px;
-
-                        & img {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: contain;
-                        }
-                    }
+                    font-family: Arial, sans-serif;
                 }
+
+
+                th,
+                td {
+                    padding: 12px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                }
+
+
+                th {
+                    color: #fff;
+                    background-color: #ec6b81;
+                    font-weight: bold;
+                    width: 150px;
+                }
+
+
+                td input[type="text"],
+                td input[type="email"],
+                td input[type="password"],
+                td input[type="date"],
+                td input[type="radio"],
+                td input[type="reset"],
+                td input[type="submit"],
+                td button {
+                    width: 100%;
+                    padding: 8px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    box-sizing: border-box;
+                }
+
+                td input[type="radio"] {
+                    width: 20%;
+                }
+
+                td input[type="password"] {
+                    width: 80%;
+                }
+
+                button {
+                    background-color: #ec6b81;
+                    color: #fff;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+                }
+
+                button:hover {
+                    background-color: #d45570;
+                }
+
+                input[type="submit"],
+                input[type="reset"] {
+                    background-color: #f5f5f5;
+                    color: #333;
+                    cursor: pointer;
+                    border-radius: 4px;
+                }
+
+                input[type="submit"] {
+                    background-color: #ec6b81;
+                    color: white;
+                    display: inline-block;
+                }
+
+                input[type="reset"] {
+                    background-color: #ddd;
+                }
+
+                input[type="reset"]:hover,
+                input[type="submit"]:hover {
+                    opacity: 0.9;
+                }
+
+
+                tr+tr {
+                    margin-top: 10px;
+                }
+
+                td:last-child {
+                    display: flex;
+                    gap: 10px;
+                    justify-content: flex-start;
+                }
+
             }
         }
 
@@ -337,39 +397,62 @@ if ($result_purchased->num_rows > 0) {
                 </table>
             </div>
             <div class="container__item user_profile">
-                <table>
-                    <tr>
-                        <th>Tên hiển thị</th>
-                        <td>
-                            <input type="text" name="displayname" value="<?php echo $this_user->getDisplayName() ?>" readonly required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Giới tinh</th>
-                        <td>
-                            <input type="radio" name="gender" value="Nam" <?php if ($this_user->getGender() == 'Nam') echo 'checked'; ?>>Nam
-                            <input type="radio" name="gender" value="Nữ" <?php if ($this_user->getGender() == 'Nữ') echo 'checked'; ?>>Nữ
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Địa chỉ</th>
-                        <td>
-                            <input type="text" name="address" value="<?php echo $this_user->getAddress() ?>" readonly required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Ngày sinh</th>
-                        <td>
-                            <input type="date" name="birthday" value="<?php echo $this_user->getBirthday() ?>" readonly required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Điện thoại</th>
-                        <td>
-                            <input type="text" name="phone" value="<?php echo $this_user->getPhone() ?>" readonly required>
-                        </td>
-                    </tr>
-                </table>
+                <form action="./manager/user_info_update.php" method="POST">
+                    <table>
+                        <tr>
+                            <th>Tên hiển thị</th>
+                            <td>
+                                <input type="text" name="displayname" value="<?php echo $this_user->getDisplayName() ?>" readonly required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>
+                                <input type="email" name="username" value="<?php echo $this_user->getUserName() ?>" readonly required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Mật khẩu</th>
+                            <td>
+                                <input type="password" class="inputPassword" name="password" value="<?php echo $this_user->getPassWord() ?>" readonly required>
+                                <input type="checkbox">Hiển thị
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Giới tinh</th>
+                            <td>
+                                <input type="radio" name="gender" value="Nam" <?php if ($this_user->getGender() == 'Nam') echo 'checked'; ?>>Nam
+                                <input type="radio" name="gender" value="Nữ" <?php if ($this_user->getGender() == 'Nữ') echo 'checked'; ?>>Nữ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Địa chỉ</th>
+                            <td>
+                                <input type="text" name="address" value="<?php echo $this_user->getAddress() ?>" readonly required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Ngày sinh</th>
+                            <td>
+                                <input type="date" name="birthday" value="<?php echo $this_user->getBirthday() ?>" readonly required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Điện thoại</th>
+                            <td>
+                                <input type="text" name="phone" value="<?php echo $this_user->getPhone() ?>" readonly required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <button type="button">Sửa</button>
+                                <input type="reset" value="Hủy">
+                                <input style="display: none;" type="submit" value="Lưu">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
             </div>
         </div>
     </div>
@@ -399,6 +482,32 @@ if ($result_purchased->num_rows > 0) {
             EventRemoveActive(review[index]);
         })
     })
+
+    $('.user_profile button').addEventListener('click', () => {
+        $('.user_profile input[type=submit]').style.display = 'block';
+        $$(".user_profile input[readonly]").forEach(input => {
+            input.removeAttribute("readonly");
+        });
+    })
+
+    $('.user_profile input[type="reset"]').addEventListener('click', function() {
+        $('.user_profile input[type="submit"]').style.display = 'none';;
+        $(".user_profile input[type=date]").readOnly = true;
+        $(".user_profile input[type=email]").readOnly = true;
+        $(".user_profile input[type=password]").readOnly = true;
+        $$(".user_profile input[type=text]").forEach(input => {
+            input.readOnly = true;
+        });
+    });
+
+    $('.user_profile input[type=checkbox]').addEventListener('change', function() {
+        const passwordField = $(".inputPassword");
+        if (this.checked) {
+            passwordField.type = 'text';
+        } else {
+            passwordField.type = 'password';
+        }
+    });
 </script>
 
 </html>

@@ -9,4 +9,6 @@ $connect = mysqli_connect($servername, $username, $password, $dbname);
 if ($connect->connect_error) {
     die("Kết nối thất bại: " . $connect->connect_error);
 }
+
+session_start();
 ?>

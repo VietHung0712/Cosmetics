@@ -9,11 +9,9 @@ use ClassProject\Product;
 use ClassProject\ProductItem;
 use ClassProject\User;
 
-
-session_start();
 $_SESSION['currentFileName'] = basename(__FILE__);
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ./sign-in.html");
+    header("Location: ./sign-in.php");
     exit();
 }
 $user_id = $_SESSION['user_id'];

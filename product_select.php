@@ -10,7 +10,6 @@ require_once "./php/function.php";
 use ClassProject\Product;
 use ClassProject\ProductItem;
 
-session_start();
 
 if (isset($_GET['this_product'])) {
     $productImage = [];

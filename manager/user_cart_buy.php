@@ -1,7 +1,6 @@
 <?php
 require_once "../php/connect.php";
 
-session_start();
 $user_id = $_SESSION['user_id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['selected'])) {
@@ -42,14 +41,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-// try {
-//     foreach ($_POST['selected'] as $index) {
-//         $product_item = $_POST['product_item'][$index];
-//         $quantity = $_POST['quantity'][$index];
-//         $price = $_POST['price'][$index];
-
-//         $sql_add_item = "INSERT INTO sales_invoice_items VALUES ('', " . $user_id . ", '" . new DateTime() . "')";
-//     }
-// } catch (Exception $e) {
-
-// }
