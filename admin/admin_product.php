@@ -25,96 +25,97 @@ require_once "../php/Manager_Brands.php";
         margin-top: 10vh;
 
         .leftMenu {
-        width: 220px;
-        padding: 15px;
-        background-color: #ec6b81;
-        color: #fff;
-        border-radius: 10px;
-        margin-right: 20px;
-        box-shadow: 0 4px 10px rgba(236, 107, 129, 0.2);
-    }
+            position: fixed;
+            width: 15vw;
+            padding: 15px;
+            background-color: #ec6b81;
+            color: #fff;
+            border-radius: 10px;
+            margin-right: 20px;
+            box-shadow: 0 4px 10px rgba(236, 107, 129, 0.2);
+        }
 
-    .leftMenu a {
-        display: block;
-        padding: 12px 15px;
-        background-color: #ff9aa2;
-        color: black;
-        text-decoration: none;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        font-size: 16px;
-        text-align: center;
-        transition: background-color 0.3s, color 0.3s, transform 0.2s;
-    }
+        .leftMenu a {
+            display: block;
+            padding: 12px 15px;
+            background-color: #ff9aa2;
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s, transform 0.2s;
+        }
 
-    .leftMenu a:hover {
-        background-color: #ff6f81;
-        color: #fff;
-        transform: translateY(-2px);
-    }
+        .leftMenu a:hover {
+            background-color: #ff6f81;
+            color: #fff;
+            transform: translateY(-2px);
+        }
 
-    form {
-        flex: 1;
-    }
+        form {
+            flex: 1;
+            margin-left: 20vw;
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: #fff;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+        }
 
-    table caption {
-        font-size: 1.5em;
-        font-weight: bold;
-        padding: 10px;
-        background-color: #ec6b81;
-        color: white;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    table th,
-    table td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #ec6b81;
-    }
+        table caption {
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #ec6b81;
+            color: white;
+        }
 
-    table th {
-        background-color: #ff9aa2;
-        color: white;
-    }
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ec6b81;
+        }
 
-    table td {
-        color: #333;
-    }
+        table th {
+            background-color: #ff9aa2;
+            color: white;
+        }
 
-    table td img {
-        width: 8vw;
-        height: 8vw;
-        object-fit: contain;
-        border-radius: 4px;
-    }
+        table td {
+            color: #333;
+        }
 
-    table td a {
-        color: #ec6b81;
-        text-decoration: none;
-        font-size: 1.5vw;
-        border: 1px solid #ec6b81;
-        border-radius: 5px;
-        background-color: transparent;
-        transition: background-color 0.3s, color 0.3s;
-        text-wrap: nowrap;
-    }
+        table td img {
+            width: 8vw;
+            height: 8vw;
+            object-fit: contain;
+            border-radius: 4px;
+        }
 
-    table td a:hover {
-        background-color: #ec6b81;
-        color: white;
-    }
-    }
+        table td a {
+            color: #ec6b81;
+            text-decoration: none;
+            font-size: 1.5vw;
+            border: 1px solid #ec6b81;
+            border-radius: 5px;
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s;
+            text-wrap: nowrap;
+        }
 
-    
+        table td a:hover {
+            background-color: #ec6b81;
+            color: white;
+        }
+    }
 </style>
 
 <body>

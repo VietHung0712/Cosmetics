@@ -59,20 +59,23 @@ function viewPort(sections, items) {
 // });
 
 let topMenu = 0;
-const fileName = window.location.pathname.split('/').pop();
-if (fileName === 'products.php' || fileName === 'product_select.php') {
+const url = window.location.href;
+
+if (url.includes('products.php') || url.includes('product_select.php')) {
     topMenu = 1;
-}else if (fileName === 'brands.php') {
+} else if (url.includes('brands.php') || url.includes('brand_select.php')) {
     topMenu = 2;
-}else if (fileName === 'contact.php') {
+} else if (url.includes('contact.php')) {
     topMenu = 3;
-}else if (fileName === 'about.php') {
+} else if (url.includes('about.php')) {
     topMenu = 4;
-}else if (fileName === 'profile.php') {
+} else if (url.includes('profile.php')) {
     topMenu = 5;
-}else if (fileName === 'user_cart.php') {
+} else if (url.includes('user_cart.php')) {
     topMenu = 6;
 }
+console.log(topMenu);
+
 
 
 const topMenuItems = $$('.topMenu');

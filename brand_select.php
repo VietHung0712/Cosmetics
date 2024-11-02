@@ -101,3 +101,4 @@ if (isset($_GET['this_brand'])) {
 </body>
 
 </html>
+<script src="./js/function.js"></script>
