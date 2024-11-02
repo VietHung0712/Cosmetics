@@ -406,7 +406,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 placeholder=" Nội dung"></textarea>
                         </div>
                         <div class="form-btn">
-                            <button type="submit" class="btn-submit">
+                            <button type="button" class="btn-submit">
                                 Gửi
                             </button>
                         </div>
@@ -478,13 +478,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <?php require_once "./php/footer.php" ?>
 </body>
-<?php
-if ($result) {
-    echo "<script>alert('Đã gửi phản ánh!')</script>";
-    exit();
-} else {
-    echo "<script>alert('Đã có lỗi!')</script>";
-}
-?>
 
 </html>
+
+<script src="./js/function.js"></script>
+<script>
+    $('.btn-submit').addEventListener('click', ()=>{
+        alert("Đã gửi phản ánh!");
+        $('form').submit();
+    })
+</script>

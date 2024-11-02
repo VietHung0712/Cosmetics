@@ -75,7 +75,7 @@ if (isset($_GET['this_brand'])) {
 
         <div class="brand__body">
             <img src="<?php echo $this_brand->getThemeUrl(); ?>" alt="">
-            <div class="brand__products">
+            <div style="padding-top: 13vh;" class="brand__products" id="brand__products">
                 <h3>Sản phẩm của <?php echo $this_brand->getName(); ?></h3>
                 <div class="brand__products--border">
                     <?php

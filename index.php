@@ -94,17 +94,17 @@ foreach ($productNews as $index => $productNew) {
                 <span class="active">
                     <h3>Perfect Diary</h3>
                     <h2>Siêu mịn,<br>lâu trôi cao cấp</h2>
-                    <a href="product_select.php?this_product=2">Mua ngay</a>
+                    <a href="product_select.php?this_product=15">Mua ngay</a>
                 </span>
                 <span>
                     <h3>Julydoll</h3>
                     <h2>Chuẩn tạo hiệu ứng cho<br>đôi má hồng</h2>
-                    <a href="product_select.php?this_product=2">Mua ngay</a>
+                    <a href="product_select.php?this_product=1">Mua ngay</a>
                 </span>
                 <span>
                     <h3>Zeesea</h3>
                     <h2>Che khuyết điểm<br>kiềm dầu hiệu quả</h2>
-                    <a href="product_select.php?this_product=2">Mua ngay</a>
+                    <a href="product_select.php?this_product=8">Mua ngay</a>
                 </span>
             </div>
             <div class="banner__button">

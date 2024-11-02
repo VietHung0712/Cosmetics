@@ -137,7 +137,8 @@ if ($result_purchased->num_rows > 0) {
         }
 
         & .container {
-            width: 70vw;
+            width: auto;
+            max-width: 80%;
             height: 100%;
 
             & .container__item {

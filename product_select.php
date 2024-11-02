@@ -90,7 +90,7 @@ if (isset($_GET['this_product'])) {
     }
 
     $discount = 0;
-    if (isset($flashDeal) && count($flashDeals) > 0) {
+    if (isset($flashDeals) && count($flashDeals) > 0) {
         foreach ($flashDeals as $item) {
             if ($item->getId() == $this_productID) {
                 $discount = $item->getDiscount();
@@ -251,14 +251,16 @@ if (isset($_GET['this_product'])) {
             <div class="product__-like--list-border">
                 <?php
                 if (count($productsLikeCategory) > 0) {
-                    foreach ($productsLikeCategory as $item) {
-                        echo "<a href='product_select.php?this_product=" . $item->getId() . "' class='product transition'>
-                        <p></p>
-                        <div class='product__img transition' style='background-image: url(" . $item->getImageUrl() . ");'></div>
-                        <div class='product__info'>
-                            <h3>" . $item->getName() . "</h3>
-                        </div>
-                    </a>";
+                    foreach ($productsLikeCategory as $index => $item) {
+                        if ($index < 4) {
+                            echo "<a href='product_select.php?this_product=" . $item->getId() . "' class='product transition'>
+                                <p></p>
+                                <div class='product__img transition' style='background-image: url(" . $item->getImageUrl() . ");'></div>
+                                <div class='product__info'>
+                                    <h3>" . $item->getName() . "</h3>
+                                </div>
+                            </a>";
+                        }
                     }
                 }
                 ?>
@@ -267,19 +269,21 @@ if (isset($_GET['this_product'])) {
         <div class="product__brand-like product__-like--list">
             <div class="product__-like--list-head">
                 <h1>Sản phẩm khác của hãng</h1>
-                <a href="">Xem tất cả</a>
+                <a href="./brand_select.php?this_brand=<?php echo $this_product->getBrand(); ?>#brand__products">Xem tất cả</a>
             </div>
             <div class="product__-like--list-border">
                 <?php
                 if (count($productsLikeBrand) > 0) {
-                    foreach ($productsLikeBrand as $item) {
-                        echo "<a href='product_select.php?this_product=" . $item->getId() . "' class='product transition'>
-                        <p></p>
-                        <div class='product__img transition' style='background-image: url(" . $item->getImageUrl() . ");'></div>
-                        <div class='product__info'>
-                            <h3>" . $item->getName() . "</h3>
-                        </div>
-                    </a>";
+                    foreach ($productsLikeBrand as $index => $item) {
+                        if($index < 4){
+                            echo "<a href='product_select.php?this_product=" . $item->getId() . "' class='product transition'>
+                                <p></p>
+                                <div class='product__img transition' style='background-image: url(" . $item->getImageUrl() . ");'></div>
+                                <div class='product__info'>
+                                    <h3>" . $item->getName() . "</h3>
+                                </div>
+                            </a>";
+                        }
                     }
                 }
                 ?>
