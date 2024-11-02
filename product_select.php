@@ -18,9 +18,20 @@ if (isset($_GET['this_product'])) {
 
     $_SESSION['currentFileName'] = basename(__FILE__) . "?this_product=" . $this_productID;
 
-    $sql_product_select = "SELECT p.*, pi.price, pi.attributes, pi.count, pi.id AS pi_id, pi.product AS pi_product
-        FROM product p 
-        JOIN product_item pi ON p.id = pi.product WHERE p.id = '$this_productID'";
+    $sql_product_select = "SELECT 
+        p.*, 
+        pi.price, 
+        pi.attributes, 
+        pi.count,
+        pi.id AS pi_id, 
+        pi.product AS pi_product 
+    FROM 
+        product p 
+    LEFT JOIN 
+        product_item pi ON p.id = pi.product 
+    WHERE 
+        p.id = $this_productID;
+";
     $result_sql_product_select = $connect->query($sql_product_select);
     if ($result_sql_product_select->num_rows > 0) {
         while ($row = $result_sql_product_select->fetch_assoc()) {
@@ -30,7 +41,7 @@ if (isset($_GET['this_product'])) {
         }
     }
     $users_review = [];
-    $sql_product_reviews = "SELECT * FROM `user_reviews` WHERE product = " . $this_product->getId();
+    $sql_product_reviews = "SELECT * FROM `user_reviews` WHERE product = " . $this_productID;
     $result_sql_product_reviews = $connect->query($sql_product_reviews);
     if ($result_sql_product_reviews->num_rows > 0) {
         while ($row = $result_sql_product_reviews->fetch_assoc()) {
@@ -101,7 +112,7 @@ if (isset($_GET['this_product'])) {
     <link rel="stylesheet" href="./css/head_footer.css">
     <link rel="stylesheet" href="./css/product_select.css">
     <link rel="stylesheet" href="./css/style.css">
-    <title></title>
+    <title>EVE</title>
 </head>
 
 <body>
@@ -275,6 +286,7 @@ if (isset($_GET['this_product'])) {
             </div>
         </div>
     </div>
+    <?php require_once "./php/footer.php" ?>
 </body>
 <script src="./js/function.js"></script>
 <script>
@@ -336,7 +348,7 @@ if (isset($_GET['this_product'])) {
     ?>
     if (!login_user) {
         $('.submitForm').style.display = 'none';
-    }else{
+    } else {
         $('.login').style.display = 'none';
     }
 </script>

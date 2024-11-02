@@ -37,7 +37,7 @@ foreach ($products as $index => $product) {
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/head_footer.css">
     <link rel="stylesheet" href="./css/style.css">
-    <title></title>
+    <title>EVE</title>
 </head>
 
 <body>
@@ -122,6 +122,7 @@ foreach ($products as $index => $product) {
         </div>
         <a class="ScrollToTop" href="#"><i class="fa-solid fa-angles-up"></i></a>
     </div>
+    <?php require_once "./php/footer.php" ?>
 </body>
 
 </html>

@@ -58,7 +58,7 @@ if ($result_purchased->num_rows > 0) {
     <link rel="stylesheet" href="./assets/fontawesome-free-6.6.0-web/fontawesome-free-6.6.0-web/css/all.min.css">
     <link rel="stylesheet" href="./assets/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/head_footer.css">
-    <title></title>
+    <title>EVE</title>
 </head>
 <style>
     #container {
@@ -349,51 +349,50 @@ if ($result_purchased->num_rows > 0) {
         <div class="container">
             <div class="container__item active user_purchased">
                 <table>
-                    <tr>
-                        <thead>
-                            <th>Hình ảnh</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Loại</th>
-                            <th>Số lượng</th>
-                            <th>Thành tiền</th>
-                            <th>Thời gian</th>
-                            <th>Sản phẩm</th>
-                        </thead>
-                        <tbody>
-                            <?php
-                            if (count($userPurchase) > 0) {
-                                foreach ($userPurchase as $item) {
-                            ?>
-                                    <tr>
-                                        <td><img src="<?php echo $item[6]; ?>" alt=""></td>
-                                        <td><?php echo $item[1]; ?></td>
-                                        <td><?php echo $item[2]; ?></td>
-                                        <td><?php echo $item[3]; ?></td>
-                                        <td><?php echo $item[4]; ?></td>
-                                        <td><?php echo $item[5]; ?></td>
-                                        <td>
-                                            <a style="text-decoration: underline; color: white; background-color: green; padding: 5px;" href="./product_select.php?this_product=<?php echo $item[0]; ?>">Xem</a>
-                                            <a class="btnReview" style="text-decoration: underline; color: white; background-color: orange; padding: 5px;">Đánh giá</a>
-                                        </td>
-                                    </tr>
-                                    <div class="review">
-                                        <div class="review__border">
-                                            <form action="./manager/user_review.php?this_product=<?php echo $item[0]; ?>" method="POST">
-                                                Xếp hạng: <span>1<input type="range" name="rating" min="1" max="5" value="5">5</span><br>
-                                                Phản hồi: <textarea name="text"></textarea> <br>
+                    <thead>
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Loại</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                        <th>Thời gian</th>
+                        <th>Sản phẩm</th>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if (count($userPurchase) > 0) {
+                            foreach ($userPurchase as $item) {
+                        ?>
+                                <tr>
+                                    <td><img src="<?php echo $item[6]; ?>" alt=""></td>
+                                    <td><?php echo $item[1]; ?></td>
+                                    <td><?php echo $item[2]; ?></td>
+                                    <td><?php echo $item[3]; ?></td>
+                                    <td><?php echo $item[4]; ?></td>
+                                    <td><?php echo $item[5]; ?></td>
+                                    <td>
+                                        <a style="text-decoration: underline; color: white; background-color: green; padding: 5px;" href="./product_select.php?this_product=<?php echo $item[0]; ?>">Xem</a>
+                                        <a class="btnReview" style="text-decoration: underline; color: white; background-color: orange; padding: 5px;">Đánh giá</a>
+                                    </td>
+                                </tr>
+                                <div class="review">
+                                    <div class="review__border">
+                                        <form action="./manager/user_review.php?this_product=<?php echo $item[0]; ?>" method="POST">
+                                            Xếp hạng: <span>1<input type="range" name="rating" min="1" max="5" value="5">5</span><br>
+                                            Phản hồi: <textarea name="text"></textarea> <br>
 
-                                                <button type="button">X</button>
-                                                <input type="submit" value="Xác nhận">
-                                            </form>
-                                        </div>
+                                            <button type="button">X</button>
+                                            <input type="submit" value="Xác nhận">
+                                        </form>
                                     </div>
-                            <?php
-                                }
-                            } else {
-                                echo "<tr><td colspan='7'>Không có dữ liệu</td></tr>";
+                                </div>
+                        <?php
                             }
-                            ?>
-                        </tbody>
+                        } else {
+                            echo "<tr><td colspan='7'>Không có dữ liệu</td></tr>";
+                        }
+                        ?>
+                    </tbody>
                 </table>
             </div>
             <div class="container__item user_profile">
@@ -456,6 +455,7 @@ if ($result_purchased->num_rows > 0) {
             </div>
         </div>
     </div>
+    <?php require_once "./php/footer.php" ?>
 </body>
 <script src="./js/function.js"></script>
 <script>

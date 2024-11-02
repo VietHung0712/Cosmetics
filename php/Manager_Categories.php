@@ -1,7 +1,7 @@
 <?php
 use ClassProject\Categories;
 
-$sql_categories = "SELECT * FROM categories";
+$sql_categories = "SELECT * FROM categories ORDER BY name";
 $categoriesArr = [];
 $result_categories = $connect->query($sql_categories);
 if ($result_categories->num_rows > 0) {

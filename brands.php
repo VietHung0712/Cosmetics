@@ -16,7 +16,7 @@ require_once "./php/Manager_Brands.php";
     <link rel="stylesheet" href="./assets/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/head_footer.css">
-    <title></title>
+    <title>EVE</title>
 </head>
 
 <body>
@@ -86,6 +86,7 @@ require_once "./php/Manager_Brands.php";
         </div>
         <a class="ScrollToTop" href="#"><i class="fa-solid fa-angles-up"></i></a>
     </div>
+    <?php require_once "./php/footer.php" ?>
 </body>
 <script src="./js/function.js"></script>
 <script>

@@ -66,7 +66,7 @@ foreach ($UserCart as $index => $item) {
     <link rel="stylesheet" href="./assets/fontawesome-free-6.6.0-web/fontawesome-free-6.6.0-web/css/all.min.css">
     <link rel="stylesheet" href="./assets/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/head_footer.css">
-    <title></title>
+    <title>EVE</title>
 </head>
 <style>
     #user_cart {
@@ -254,7 +254,7 @@ foreach ($UserCart as $index => $item) {
             </form>
         </div>
     </div>
-
+    <?php require_once "./php/footer.php" ?>
 </body>
 
 </html>

@@ -26,3 +26,13 @@ function RankNumberToStar($rank)
     }
     return $star;
 }
+
+
+function getIdToName($Arr, $id)
+    {
+        foreach ($Arr as $item) {
+            if ($item->getId() == $id) {
+                return $item->getName();
+            }
+        }
+    }

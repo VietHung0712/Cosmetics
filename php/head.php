@@ -46,7 +46,7 @@ if (isset($_SESSION['user_id'])) {
                     </ul>
                 </li>
                 <li><a class="topMenu" href="./contact.php">Liên hệ</a></li>
-                <li><a class="topMenu" href="./about">Giới thiệu</a></li>
+                <li><a class="topMenu" href="./about.php">Giới thiệu</a></li>
             </ul>
         </div>
         <div class="h-100" style="width: 40%;">

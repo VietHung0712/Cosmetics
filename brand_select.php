@@ -45,7 +45,7 @@ if (isset($_GET['this_brand'])) {
     <link rel="stylesheet" href="./css/head_footer.css">
     <link rel="stylesheet" href="./css/brand_select.css">
     <link rel="stylesheet" href="./css/style.css">
-    <title></title>
+    <title>EVE</title>
 </head>
 
 <body>
@@ -97,6 +97,7 @@ if (isset($_GET['this_brand'])) {
             </div>
         </div>
     </div>
+    <?php require_once "./php/footer.php" ?>
 </body>
 
 </html>
