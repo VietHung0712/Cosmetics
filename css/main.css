@@ -536,7 +536,7 @@ section {
         & .products__filter--list {
             z-index: 3;
             position: fixed;
-            height: calc(100vh - 12vh);
+            height: calc(100vh - 15vh);
             width: 14vw;
             top: 12vh;
             left: 0;
