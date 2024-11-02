@@ -60,7 +60,7 @@ require_once "./php/Manager_Brands.php";
             <div class="brands__banner">
                 <img class="active transition" src="./images/enchanteur_theme.webp" alt="">
                 <img class="transition" src="./images/aesturavn_theme.webp" alt="">
-                <img class="transition" src="./images/xMen_theme.webp" alt="" style="object-fit: cover;">
+                <img class="transition" src="./images/perfectdiary_theme.webp" alt="" style="object-fit: cover;">
                 <button class="transition"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
 
