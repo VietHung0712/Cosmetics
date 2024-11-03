@@ -185,7 +185,7 @@ foreach ($UserCart as $index => $item) {
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td colspan="2"><input class="btnBuy" style="font-weight: bold; padding: 1vh 2vw; background-color: #ec6b81; color: #fff;" type="submit" onclick="return confirm('Bạn có chắc chắn mua không?')" value="Mua ngay"></td>
+                            <td colspan="2"><input class="btnBuy" style="font-weight: bold; padding: 1vh 2vw; background-color: #ec6b81; color: #fff;" type="button" onclick="return confirm('Bạn có chắc chắn mua không?')" value="Mua ngay"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -224,7 +224,7 @@ foreach ($UserCart as $index => $item) {
             }
         });
         if (check > 0) {
-            EventAddActive($('.confirm'));
+            $('form').submit();
         } else {
             alert("Hãy chọn ít nhận 1 sản phẩm!");
         }

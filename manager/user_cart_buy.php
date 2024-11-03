@@ -88,9 +88,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $row['name'],
                     $row['quantity'],
                     $row['price'],
-                    $row['quantity'] * $row['price'] // Tính thành tiền
+                    $row['quantity'] * $row['price']
                 ]);
-                $total += $row['quantity'] * $row['price']; // Cộng dồn tổng tiền
+                $total += $row['quantity'] * $row['price'];
             } while ($row = $result_file->fetch_assoc());
 
             fputcsv($output, []);

@@ -29,7 +29,7 @@ if ($result->num_rows > 0) {
             <!--Logo-->
             <a href="./" class="logo auth__intro-logo d-none d-md-flex">
                 <img src="./assets/icons/logo.svg" alt="grocerymart" class="img__logo" />
-                <h1 class="logo__title">Le Belle</h1>
+                <h1 class="logo__title">EVE</h1>
             </a>
             <img src="./assets/images/auth/intro.png" alt="" class="auth__intro-img" />
             <p class="auth__intro-text">
@@ -45,7 +45,7 @@ if ($result->num_rows > 0) {
                 <!--Logo-->
                 <a href="./" class="logo">
                     <img src="./assets/icons/logo.svg" alt="grocerymart" class="img__logo" />
-                    <h1 class="logo__title">Le Belle</h1>
+                    <h1 class="logo__title">EVE</h1>
                 </a>
                 <h1 class="auth__heading">Đăng kí tài khoản</h1>
                 <p class="auth__desc">Hãy đăng kí tài khoản của bạn để thoả thích mua sắm.</p>

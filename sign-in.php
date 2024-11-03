@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <!--Logo-->
                     <a href="./" class="logo">
                         <img src="./assets/icons/logo.svg" alt="grocerymart" class="img__logo" />
-                        <h2 class="logo__title">Le Belle</h2>
+                        <h2 class="logo__title">EVE</h2>
                     </a>
                     <h1 class="auth__heading">Đăng nhập</h1>
                     <p class="auth__desc">Hãy đăng nhập tài khoản của bạn để thoả thích mua sắm.</p>
