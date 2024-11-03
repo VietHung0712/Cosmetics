@@ -111,62 +111,7 @@ foreach ($UserCart as $index => $item) {
 
             }
 
-            & .confirm {
-                z-index: 4;
-                position: fixed;
-                display: none;
-                justify-content: center;
-                align-items: center;
-                top: 0;
-                left: 0;
-                height: 100%;
-                width: 100%;
-                background-color: #00000088;
-
-                &.active {
-                    display: flex;
-                }
-
-                & .confirm__border {
-                    position: absolute;
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: center;
-                    height: 20%;
-                    width: 20%;
-                    border: 1px solid black;
-                    background-color: #fff;
-                    border-radius: 10px;
-
-                    & p {
-                        position: absolute;
-                        font-weight: bold;
-                        top: 0;
-                    }
-
-                    & input {
-                        padding: 1vh 2vw;
-                        font-weight: bold;
-                        color: white;
-
-                        &[type='submit'] {
-                            background-color: #ec6b81;
-
-                            &:hover {
-                                background-color: red;
-                            }
-                        }
-
-                        &[type='button'] {
-                            background-color: #555;
-
-                            &:hover {
-                                background-color: #000;
-                            }
-                        }
-                    }
-                }
-            }
+            
         }
     }
 </style>
@@ -240,15 +185,8 @@ foreach ($UserCart as $index => $item) {
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td colspan="2"><input class="btnBuy" style="font-weight: bold; padding: 1vh 2vw; background-color: #ec6b81; color: #fff;" type="button" value="Mua ngay"></td>
+                            <td colspan="2"><input class="btnBuy" style="font-weight: bold; padding: 1vh 2vw; background-color: #ec6b81; color: #fff;" type="submit" onclick="return confirm('Bạn có chắc chắn mua không?')" value="Mua ngay"></td>
                         </tr>
-                        <div class="confirm transition">
-                            <div class="confirm__border">
-                                <p>Xác nhận mua?</p>
-                                <input type="submit" value="Xác nhận">
-                                <input type="button" value="Hủy">
-                            </div>
-                        </div>
                     </tbody>
                 </table>
             </form>
@@ -290,8 +228,5 @@ foreach ($UserCart as $index => $item) {
         } else {
             alert("Hãy chọn ít nhận 1 sản phẩm!");
         }
-    })
-    $('.confirm__border>input[type=button]').addEventListener('click', () => {
-        EventRemoveActive($('.confirm'));
     })
 </script>

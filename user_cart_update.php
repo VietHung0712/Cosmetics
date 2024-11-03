@@ -177,7 +177,7 @@ if (isset($_GET['this_cart'])) {
                     <th></th>
                     <td>
                         <input type="submit" value="Lưu">
-                        <input type="reset" value="Hủy">
+                        <input type="reset" value="Nhập lại">
                         <a href="./user_cart.php">Thoát</a>
                     </td>
                 </tr>

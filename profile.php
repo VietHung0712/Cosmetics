@@ -61,273 +61,159 @@ if ($result_purchased->num_rows > 0) {
     <title>EVE</title>
 </head>
 <style>
+
     #container {
-        width: 95vw;
-        height: calc(100vh - 13vh);
-        margin: auto;
-        margin-top: 13vh;
         display: flex;
+        width: 100%;
+        margin: 20px auto;
+        background: white;
+        border-radius: 8px;
+        margin-top: 13vh;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-        & .leftMenu {
-            width: 15vw;
-            height: 100%;
-            border-radius: 10% 10% 0 0;
-            overflow: hidden;
+    .leftMenu {
+        position: fixed;
+        width: 15%;
+        background-color: #ec6b81;
+        color: white;
+        padding: 20px;
+        height: 100%;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        z-index: 3;
+    }
 
-            & .user__display {
-                background-image: linear-gradient(to bottom, #0000005b, #000000), url(./images/SummonersRift.webp);
-                background-position: center;
-                background-size: cover;
-                height: 30%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: space-around;
+    .user__display {
+        text-align: center;
+        margin-bottom: 20px;
 
-                & h3 {
-                    width: 100%;
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: 1vw;
-                    color: #fff;
-                }
-
-                & img {
-                    height: 70%;
-                    border-radius: 50%;
-                    object-fit: contain;
-                    border: 1px solid red;
-                    background-color: wheat;
-                }
-            }
-
-            & .leftMenu__function {
-                height: 20%;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: space-around;
-
-                & button {
-                    width: 100%;
-                    height: 5vh;
-
-                    &.active {
-                        background-color: #ec6b81;
-                        color: #fff;
-                    }
-                }
-            }
-
-            & .others {
-                height: 40%;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: end;
-
-                & a {
-                    background-color: black;
-                    color: #fff;
-                    padding: 0 10px;
-                }
-            }
+        h3{
+            font-size: 1.5vw;
         }
+    }
 
-        & .container {
-            width: auto;
-            max-width: 80%;
-            height: 100%;
+    .user__display img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
 
-            & .container__item {
-                display: none;
+    .leftMenu__function {
+        margin-bottom: 20px;
+    }
 
-                &.active {
-                    display: block;
-                }
-            }
+    .leftMenu__function button {
+        width: 100%;
+        background-color: transparent;
+        border: none;
+        color: white;
+        padding: 10px;
+        text-align: left;
+        cursor: pointer;
+        font-size: 16px;
+    }
 
-            & .user_purchased {
-                max-height: 80%;
-                width: 100%;
-                margin-top: 5%;
-                overflow-y: auto;
-                border: 2px solid #ec6b81;
+    .leftMenu__function button.active {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
 
-                & table {
-                    width: 100%;
-                    border-collapse: collapse;
+    .others a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        display: block;
+    }
 
-                    & td,
-                    & th {
-                        height: 5vh;
-                        padding: 0 5px;
-                        text-align: center;
-                        border: 2px solid #ec6b81;
+    .container {
+        width: 100%;
+        margin-left: 15vw;
+        padding: 20px;
+    }
 
-                        & img {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: contain;
-                        }
-                    }
+    .container__item {
+        display: none;
+    }
 
-                    & thead {
-                        position: sticky;
-                        top: 0;
-                        color: white;
-                        background-color: #ec6b81;
-                    }
+    .container__item.active {
+        display: block;
+    }
 
-                    & tbody {
-                        td {
-                            border: 1px solid red;
-                        }
-                    }
-                }
-            }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
 
-            & .user_profile {
-                max-height: 80%;
-                width: 100%;
-                margin-top: 5%;
+    table,
+    th,
+    td {
+        border: 1px solid #ddd;
+    }
 
+    th,
+    td {
+        padding: 15px;
+        text-align: left;
+    }
 
-                table {
-                    width: 100%;
-                    margin: 20px auto;
-                    border-collapse: collapse;
-                    font-family: Arial, sans-serif;
-                }
+    th {
+        background-color: #ec6b81;
+        color: white;
+    }
 
+    td img {
+        width: 50px;
+        /* Adjust size for product images */
+        height: 50px;
+    }
 
-                th,
-                td {
-                    padding: 12px;
-                    text-align: left;
-                    border-bottom: 1px solid #ddd;
-                }
+    .review {
+        display: none;
+        /* Initially hidden, can be shown with JavaScript */
+    }
 
+    .review__border {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #f9f9f9;
+    }
 
-                th {
-                    color: #fff;
-                    background-color: #ec6b81;
-                    font-weight: bold;
-                    width: 150px;
-                }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="date"],
+    input[type="tel"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
 
+    button,
+    input[type="submit"],
+    input[type="reset"] {
+        background-color: #ec6b81;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 
-                td input[type="text"],
-                td input[type="email"],
-                td input[type="password"],
-                td input[type="date"],
-                td input[type="radio"],
-                td input[type="reset"],
-                td input[type="submit"],
-                td button {
-                    width: 100%;
-                    padding: 8px;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
-                    box-sizing: border-box;
-                }
+    button:hover,
+    input[type="submit"]:hover,
+    input[type="reset"]:hover {
+        background-color: #0056b3;
+    }
 
-                td input[type="radio"] {
-                    width: 20%;
-                }
-
-                td input[type="password"] {
-                    width: 80%;
-                }
-
-                button {
-                    background-color: #ec6b81;
-                    color: #fff;
-                    border: none;
-                    padding: 8px 16px;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                }
-
-                button:hover {
-                    background-color: #d45570;
-                }
-
-                input[type="submit"],
-                input[type="reset"] {
-                    background-color: #f5f5f5;
-                    color: #333;
-                    cursor: pointer;
-                    border-radius: 4px;
-                }
-
-                input[type="submit"] {
-                    background-color: #ec6b81;
-                    color: white;
-                    display: inline-block;
-                }
-
-                input[type="reset"] {
-                    background-color: #ddd;
-                }
-
-                input[type="reset"]:hover,
-                input[type="submit"]:hover {
-                    opacity: 0.9;
-                }
-
-
-                tr+tr {
-                    margin-top: 10px;
-                }
-
-                td:last-child {
-                    display: flex;
-                    gap: 10px;
-                    justify-content: flex-start;
-                }
-
-            }
-        }
-
-        & .review {
-            z-index: 4;
-            position: fixed;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 100%;
-            background-color: #00000022;
-
-            &.active {
-                display: flex;
-            }
-
-            & .review__border {
-                position: relative;
-                width: 20%;
-                height: 40%;
-                background-color: #fff;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-
-                & button {
-                    position: absolute;
-                    right: 0;
-                    top: 0;
-                    padding: 0.3vw;
-                    border: none;
-                }
-            }
-        }
+    input[type="checkbox"] {
+        margin-right: 5px;
     }
 </style>
 
@@ -372,8 +258,10 @@ if ($result_purchased->num_rows > 0) {
                                     <td><?php echo $item[4]; ?></td>
                                     <td><?php echo $item[5]; ?></td>
                                     <td>
-                                        <a style="text-decoration: underline; color: white; background-color: green; padding: 5px;" href="./product_select.php?this_product=<?php echo $item[0]; ?>">Xem</a>
-                                        <a class="btnReview" style="text-decoration: underline; color: white; background-color: orange; padding: 5px;">Đánh giá</a>
+                                        <ul>
+                                            <li><a style="text-decoration: underline; color: white; background-color: green;" href="./product_select.php?this_product=<?php echo $item[0]; ?>">Xem</a></li>
+                                            <li><a class="btnReview" style="text-decoration: underline; color: white; background-color: orange;text-wrap: nowrap;">Đánh giá</a></li>
+                                        </ul>
                                     </td>
                                 </tr>
                                 <div class="review">
