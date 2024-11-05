@@ -29,10 +29,10 @@ function RankNumberToStar($rank)
 
 
 function getIdToName($Arr, $id)
-    {
-        foreach ($Arr as $item) {
-            if ($item->getId() == $id) {
-                return $item->getName();
-            }
+{
+    foreach ($Arr as $item) {
+        if ($item->getId() == $id) {
+            return $item->getName();
         }
     }
+}

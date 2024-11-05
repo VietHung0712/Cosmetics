@@ -120,7 +120,7 @@ foreach ($UserCart as $index => $item) {
     <?php require_once "./php/head.php"; ?>
     <div id="user_cart">
         <div class="user_cart__border">
-            <form action="./manager/user_cart_buy.php" method="POST" autocomplete="off">
+            <form action="./manager/user_cart_buy1.php" method="POST" autocomplete="off">
                 <table>
                     <thead>
                         <tr>
