@@ -6,15 +6,22 @@ require_once "../php/Manager_Categories.php";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['category'];
 
-    $sql = "INSERT INTO categories VALUES ('','$name')";
-    $result = mysqli_query($connect, $sql);
+    $sql = "INSERT INTO categories VALUES ('', ?)";
+    $result = mysqli_prepare($connect, $sql);
     if ($result) {
-        header("Location: ./admin_add_category.php");
-        exit();
+        $result->bind_param("s", $name);
+        if ($result->execute()) {
+            header("Location: ./admin_add_category.php");
+            exit();
+        } else {
+            echo "<script>alert('Đã có lỗi!')</script>";
+        }
+        $result->close();
     } else {
-        echo "<script>alert('Đã có lỗi!')</script>";
+        echo "<script>alert('Không thể chuẩn bị truy vấn!')</script>";
     }
 }
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">

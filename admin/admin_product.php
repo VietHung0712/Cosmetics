@@ -6,7 +6,7 @@ require_once "../php/Manager_Products.php";
 require_once "../php/Manager_FlashDeal.php";
 require_once "../php/Manager_Categories.php";
 require_once "../php/Manager_Brands.php";
-
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">

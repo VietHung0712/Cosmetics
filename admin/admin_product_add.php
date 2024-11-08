@@ -5,22 +5,31 @@ require_once "../php/Manager_Products.php";
 require_once "../php/Manager_Categories.php";
 require_once "../php/Manager_Brands.php";
 
-if($_SERVER['REQUEST_METHOD']==='POST'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $name = $_POST['name'];
     $categories = $_POST['categories'];
     $brand = $_POST['brand'];
     $review = $_POST['review'];
     $imageURL = $_POST['image_url'];
 
-    $sql = "INSERT INTO product VALUES ('','$name', $categories, $brand, '$review', '$imageURL')";
-    $result = mysqli_query($connect, $sql);
+    $sql = "INSERT INTO product VALUES ('', ?, ?, ?, ?, ?)";
+    $result = mysqli_prepare($connect, $sql);
     if ($result) {
-        header("Location: ./admin_product.php");
-        exit();
+        $result->bind_param("siiss", $name, $categories, $brand, $review, $imageURL);
+        if ($result->execute()) {
+            header("Location: ./admin_product.php");
+            exit();
+        } else {
+            echo "<script>alert('Đã có lỗi!')</script>";
+        }
+        $result->close();
     } else {
-        echo "<script>alert('Đã có lỗi!')</script>";
+        echo "<script>alert('Không thể chuẩn bị truy vấn!')</script>";
     }
 }
+mysqli_close($connect);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

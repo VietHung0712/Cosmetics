@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<script>alert('Sai tài khoản hoặc mật khẩu!')</script>";
     }
 }
+mysqli_close($connect);
 ?>
 
 <!DOCTYPE html>

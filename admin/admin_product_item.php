@@ -25,6 +25,7 @@ if (isset($_GET['product'])) {
         }
     }
 }
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">

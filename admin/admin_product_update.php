@@ -25,17 +25,23 @@ if (isset($_GET['product'])) {
         $review = $_POST['review'];
         $image_url = $_POST['image_url'];
 
-        $sql = "UPDATE product SET name = '$name', categories = $categories, brand = $brand, review = '$review', image_url = '$image_url' WHERE id = $product";
-        $result = mysqli_query($connect, $sql);
+        $sql = "UPDATE product SET name = ?, categories = ?, brand = ?, review = ?, image_url = ? WHERE id = ?";
+        $result = mysqli_prepare($connect, $sql);
         if ($result) {
-            header("Location: ./admin_product.php");
-            exit();
+            $result->bind_param("siissi", $name, $categories, $brand, $review, $image_url, $product);
+            if ($result->execute()) {
+                header("Location: ./admin_product.php");
+                exit();
+            } else {
+                echo "<script>alert('Đã có lỗi!')</script>";
+            }
+            $result->close();
         } else {
-            echo "<script>alert('Đã có lỗi!')</script>";
+            echo "<script>alert('Không thể chuẩn bị truy vấn!')</script>";
         }
     }
 }
-
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">

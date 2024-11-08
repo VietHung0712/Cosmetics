@@ -6,13 +6,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $product = $_GET['product'];
 
-    $sql = "INSERT INTO product_image VALUES ('', $product, '$image_url')";
-    $result = mysqli_query($connect, $sql);
-    mysqli_close($connect);
+    $sql = "INSERT INTO product_image VALUES ('', ?, ?)";
+    $result = mysqli_prepare($connect, $sql);
     if ($result) {
-        header("Location: ./admin_product_item.php?product=" . $product);
-        exit();
+        $result->bind_param("is", $product, $image_url);
+        if ($result->execute()) {
+            header("Location: ./admin_product_item.php?product=" . $product);
+            exit();
+        } else {
+            echo "<script>alert('Đã có lỗi!')</script>";
+        }
+        $result->close();
     } else {
-        echo "<script>alert('Đã có lỗi!')</script>";
+        echo "<script>alert('Không thể chuẩn bị truy vấn!')</script>";
     }
 }
+mysqli_close($connect);

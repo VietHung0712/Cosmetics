@@ -2,6 +2,7 @@
 require_once "../php/connect.php";
 require_once "../php/class.php";
 require_once "../php/function.php";
+
 use ClassProject\User;
 
 $sql = "SELECT * FROM user";
@@ -12,7 +13,7 @@ if ($result->num_rows > 0) {
         $userArr[] = $user;
     }
 }
-
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +24,6 @@ if ($result->num_rows > 0) {
     <title>EVE - Admin</title>
 </head>
 <style>
-
     #main {
         max-width: 80%;
         margin: 0 auto;
@@ -33,7 +33,7 @@ if ($result->num_rows > 0) {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-top: 10vh;
 
-        a{
+        a {
             padding: 5px;
             background-color: #d8586f;
             color: white;

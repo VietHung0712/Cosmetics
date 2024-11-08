@@ -24,7 +24,7 @@ if (isset($_GET['id'])) {
         }
     }
 }
-
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">

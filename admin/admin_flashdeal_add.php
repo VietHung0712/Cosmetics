@@ -13,15 +13,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $starttime = explode("/", $time)[0];
     $endtime = explode("/", $time)[1];
 
-    $sql = "INSERT INTO flash_deal VALUES ('',$product, $discount, '$starttime', '$endtime')";
-    $result = mysqli_query($connect, $sql);
+    $sql = "INSERT INTO flash_deal VALUES ('', ?, ?, ?, ?)";
+    $result = mysqli_prepare($connect, $sql);
     if ($result) {
-        header("Location: ./admin_flashdeal.php");
-        exit();
+        $result->bind_param("iiss", $product, $discount, $starttime, $endtime);
+        if ($result->execute()) {
+            header("Location: ./admin_flashdeal.php");
+            exit();
+        } else {
+            echo "<script>alert('Đã có lỗi!')</script>";
+        }
+        $result->close();
     } else {
-        echo "<script>alert('Đã có lỗi!')</script>";
+        echo "<script>alert('Không thể chuẩn bị truy vấn!')</script>";
     }
 }
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">

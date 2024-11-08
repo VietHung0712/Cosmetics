@@ -6,16 +6,23 @@ if (isset($_GET['id']) && isset($_GET['name'])) {
     $name = $_GET['name'];
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = $_POST['name'];
-        $sql = "UPDATE categories SET name = '$name' WHERE id = $id";
-        $result = mysqli_query($connect, $sql);
+        $sql = "UPDATE categories SET name = ? WHERE id = ?";
+        $result = mysqli_prepare($connect, $sql);
         if ($result) {
-            header("Location: ./admin_add_category.php");
-            exit();
+            $result->bind_param("si", $name, $id);
+            if ($result->execute()) {
+                header("Location: ./admin_add_category.php");
+                exit();
+            } else {
+                echo "<script>alert('Đã có lỗi!')</script>";
+            }
+            $result->close();
         } else {
-            echo "<script>alert('Đã có lỗi!')</script>";
+            echo "<script>alert('Không thể chuẩn bị truy vấn!')</script>";
         }
     }
 }
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">

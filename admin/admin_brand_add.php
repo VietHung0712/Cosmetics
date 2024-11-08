@@ -13,15 +13,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $background_url = $_POST['background_url'];
     $theme_url = $_POST['theme_url'];
 
-    $sql = "INSERT INTO brand VALUES ('','$name', '$address', '$phone', '$icon_url', '$background_url', '$theme_url')";
-    $result = mysqli_query($connect, $sql);
+    $sql = "INSERT INTO brand VALUES ('', ?, ?, ?, ?, ?, ?)";
+    $result = mysqli_prepare($connect, $sql);
     if ($result) {
-        header("Location: ./admin_brand.php");
-        exit();
+        $result->bind_param("ssssss", $name, $address, $phone, $icon_url, $background_url, $theme_url);
+        if ($result->execute()) {
+            header("Location: ./admin_brand.php");
+            exit();
+        } else {
+            echo "<script>alert('Đã có lỗi!')</script>";
+        }
+        $result->close();
     } else {
-        echo "<script>alert('Đã có lỗi!')</script>";
+        echo "<script>alert('Không thể chuẩn bị truy vấn!')</script>";
     }
 }
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -139,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <tr>
                     <th>Địa chỉ</th>
                     <td>
-                    <select name="address">
+                        <select name="address">
                             <option value="Anh">Anh</option>
                             <option value="Australia">Australia</option>
                             <option value="Brazil">Brazil</option>

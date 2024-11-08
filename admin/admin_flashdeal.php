@@ -4,7 +4,7 @@ require_once "../php/class.php";
 require_once "../php/function.php";
 require_once "../php/Manager_Products.php";
 require_once "../php/Manager_FlashDeal.php";
-
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">

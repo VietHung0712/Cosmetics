@@ -25,17 +25,23 @@ if (isset($_GET['id'])) {
         $background_url = $_POST['background_url'];
         $theme_url = $_POST['theme_url'];
 
-        $sql = "UPDATE brand SET name = '$name', address = '$address', phone = '$phone', icon_url = '$icon_url', background_url = '$background_url', theme_url = '$theme_url' WHERE id = $id";
-        $result = mysqli_query($connect, $sql);
+        $sql = "UPDATE brand SET name = ?, address = ?, phone = ?, icon_url = ?, background_url = ?, theme_url = ? WHERE id = $id";
+        $result = mysqli_prepare($connect, $sql);
         if ($result) {
-            header("Location: ./admin_brand.php");
-            exit();
+            $result->bind_param("ssssss", $name, $address, $phone, $icon_url, $background_url, $theme_url);
+            if ($result->execute()) {
+                header("Location: ./admin_brand.php");
+                exit();
+            } else {
+                echo "<script>alert('Đã có lỗi!')</script>";
+            }
+            $result->close();
         } else {
-            echo "<script>alert('Đã có lỗi!')</script>";
+            echo "<script>alert('Không thể chuẩn bị truy vấn!')</script>";
         }
     }
 }
-
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">

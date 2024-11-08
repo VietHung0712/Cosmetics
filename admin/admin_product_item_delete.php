@@ -3,14 +3,19 @@ require_once "../php/connect.php";
 if (isset($_GET['id']) && isset($_GET['product'])) {
     $id = $_GET['id'];
     $product = $_GET['product'];
-    $sql = "DELETE FROM product_item WHERE id = $id";
-    $result = mysqli_query($connect, $sql);
-    mysqli_close($connect);
+    $sql = "DELETE FROM product_item WHERE id = ?";
+    $result = mysqli_prepare($connect, $sql);
     if ($result) {
-        header("Location: ./admin_product_item.php?product=" . $product);
-        exit();
+        $result->bind_param("i", $id);
+        if ($result->execute()) {
+            header("Location: ./admin_product_item.php?product=" . $product);
+            exit();
+        } else {
+            echo "<script>alert('Đã có lỗi!')</script>";
+        }
+        $result->close();
     } else {
-        echo "<script>alert('Đã có lỗi!')</script>";
+        echo "<script>alert('Không thể chuẩn bị truy vấn!')</script>";
     }
 }
-?>
+mysqli_close($connect);

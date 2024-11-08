@@ -8,9 +8,9 @@ require_once "../php/Manager_FlashDeal.php";
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $this_flashDeal;
-    foreach ($flashDeals as $item) {
-        if ($id == $item->getID()) {
-            $this_flashDeal = $item;
+    foreach ($flashDealIdAll as $index => $itemId) {
+        if ($id == $itemId) {
+            $this_flashDeal = $flashDealAll[$index];
         }
     }
     $this_time = $this_flashDeal->getStartTime() . "/" . $this_flashDeal->getEndTime();
@@ -22,16 +22,23 @@ if (isset($_GET['id'])) {
         $starttime = explode("/", $time)[0];
         $endtime = explode("/", $time)[1];
 
-        $sql = "UPDATE flash_deal SET discount = $discount, starttime = '$starttime', endtime = '$endtime' WHERE id = $id";
-        $result = mysqli_query($connect, $sql);
+        $sql = "UPDATE flash_deal SET discount = ?, starttime = ?, endtime = ? WHERE id = ?";
+        $result = mysqli_prepare($connect, $sql);
         if ($result) {
-            header("Location: ./admin_flashdeal.php");
-            exit();
+            $result->bind_param("dssi", $discount, $starttime, $endtime, $id);
+            if ($result->execute()) {
+                header("Location: ./admin_flashdeal.php");
+                exit();
+            } else {
+                echo "<script>alert('Đã có lỗi!')</script>";
+            }
+            $result->close();
         } else {
-            echo "<script>alert('Đã có lỗi!')</script>";
+            echo "<script>alert('Không thể chuẩn bị truy vấn!')</script>";
         }
     }
 }
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">
