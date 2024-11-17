@@ -9,6 +9,7 @@ if ($result->num_rows > 0) {
         $username[] = $row['username'];
     }
 }
+mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">

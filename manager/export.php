@@ -93,3 +93,4 @@ header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetm
 header('Content-Disposition: attachment; filename="' . $filename . '"');
 $writer->save('php://output');
 exit();
+mysqli_close($connect);

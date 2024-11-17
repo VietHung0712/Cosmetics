@@ -3,6 +3,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once "./php/connect.php";
     $email = $_POST['email'];
     $password = $_POST['password'];
+    mysqli_close($connect);
 }
 ?>
 <!DOCTYPE html>

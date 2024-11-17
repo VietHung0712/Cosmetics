@@ -1,5 +1,5 @@
 <?php
-
+// require_once "./php/connect.php";
 $cart = null;
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
@@ -13,7 +13,7 @@ if (isset($_SESSION['user_id'])) {
         }
     }
 }
-
+mysqli_close($connect);
 ?>
 
 <div id='head' class="w-100 position-fixed d-flex">

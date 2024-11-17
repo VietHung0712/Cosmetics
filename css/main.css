@@ -622,6 +622,27 @@ section {
         grid-auto-rows: 60vh;
         gap: 1vw;
     }
+
+    .products__tabs{
+        height: 20vh;
+        width: calc(100% - 16vw);
+        margin-left: 15vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        & button{
+            width: 2vw;
+            height: 2vw;
+            background-color: var(--bgcolor-);
+            color: #fff;
+        }
+
+        & p{
+            width: 5vw;
+            text-align: center;
+        }
+    }
 }
 
 #brands {

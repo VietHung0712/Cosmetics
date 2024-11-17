@@ -4,20 +4,19 @@ $user_id = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_id = $_GET['product_id'];
-    $sql_add =
-        "INSERT INTO user_cart (id, user, product_item, quantity) VALUES
-            ('',
-            $user_id,
-            '" . $_POST['attributes'] . "',
-            " . $_POST['quantity'] . ")";
-    echo $sql_add;
-    $result = mysqli_query($connect, $sql_add);
+    $sql = "INSERT INTO user_cart VALUES ('', ?, ?, ?)";
+    $result = mysqli_prepare($connect, $sql);
     if ($result) {
-        header("Location: ../user_cart.php");
-        exit();
+        $result->bind_param("iss", $user_id, $_POST['attributes'], $_POST['quantity']);
+        if ($result->execute()) {
+            header("Location: ../user_cart.php");
+            exit();
+        } else {
+            echo "<script>alert('Đã có lỗi!')</script>";
+        }
+        $result->close();
     } else {
-        echo "<script>
-                    alert('Thêm không thành công!');
-                </script>";
+        echo "<script>alert('Không thể chuẩn bị truy vấn!')</script>";
     }
 }
+mysqli_close($connect);
