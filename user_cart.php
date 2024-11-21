@@ -162,7 +162,7 @@ if(isset($_GET['export'])){
                         <td style='font-weight: bold;'>" . $infoProduct[$index]->getName() . "</td>
                         <td><img src='" . $infoProduct[$index]->getImageUrl() . "' alt=''>  </td>
                         <td>" . $infoProductItem[$index]->getAttributes() . "</td>
-                        <td><input name='quantity[]' type='text' value='$item[2]'></td>
+                        <td><input name='quantity[]' type='text' value='$item[2]' readonly></td>
                         <td><input name='price[]' class='price' data-price='$price' type='text' value='$price' readonly></td>
                         <td>
                             <a href='product_select.php?this_product=" . $infoProduct[$index]->getId() . "' style='background-color: orange; color: #fff; padding: 5px;'>Chi tiết</a>

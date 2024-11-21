@@ -131,7 +131,7 @@ if (isset($products) && count($products) > 0) {
                             <h3>" . $product->getName() . "</h3>
                             <h3>" . RankNumberToStar($rank[$index]) . "</h3>
                             <h3>Đã bán: " . $quantityItem . "</h3>
-                            <h4>Giá: " . $productsItems[$index]->getPrice() / 1000 . " 000 VND</h4>
+                            <h4>Giá: " . $productsItems[$index]->getPrice() . " VND</h4>
                         </div>
                     </a>";
                 }
@@ -246,6 +246,8 @@ if (isset($products) && count($products) > 0) {
             productsElement.forEach((product) => {
                 parent.appendChild(product);
             });
+            this_page = 1;
+            productTab();
         });
     });
 
@@ -266,6 +268,8 @@ if (isset($products) && count($products) > 0) {
         productsElement.forEach((product) => {
             parent.appendChild(product);
         });
+        this_page = 1;
+        productTab();
     });
 
 

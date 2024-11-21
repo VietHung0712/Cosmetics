@@ -124,7 +124,7 @@ foreach ($productNews as $index => $productNew) {
                             <div class='product__img transition' style='background-image: url(" . $product->getImageUrl() . ");'></div>
                             <div class='product__info'>
                                     <h3>" . $product->getName() . "</h3>
-                                    <h4>Giá: " . $productNewItems[$index]->getPrice() / 1000 . " 000 VND</h4>
+                                    <h4>Giá: " . $productNewItems[$index]->getPrice() . " VND</h4>
                             </div>
                         </a>";
                     }
@@ -173,7 +173,7 @@ foreach ($productNews as $index => $productNew) {
 
         <div id="flashDeal-more" style="display: none; height: 0;">
             <h1>Giảm giá <i class="fa-solid fa-hand-holding-dollar"></i></h1>
-            <div class="productNew__border">
+            <div class="flashDeal-more__border">
                 <?php
                 if (isset($flashDeals)) {
                     foreach ($flashDeals as $index => $product) {
@@ -182,8 +182,8 @@ foreach ($productNews as $index => $productNew) {
                             <div class='product__img transition' style='background-image: url(" . $product->getImageUrl() . ");'></div>
                             <div class='product__info'>
                                     <h3>" . $product->getName() . "</h3>
-                                    <h3 style='text-decoration: line-through;'>" . $flashDealPrices[$index] / 1000 . " 000 VND</h3>
-                                    <h4>Giá mới: " . $flashDealPrices[$index] * (100 - $product->getDiscount()) / 100  / 1000 . " 000 VND</h4>
+                                    <h3 style='text-decoration: line-through;'>" . $flashDealPrices[$index] . " VND</h3>
+                                    <h4>Giá mới: " . $flashDealPrices[$index] * (100 - $product->getDiscount()) / 100  . " VND</h4>
                             </div>
                         </a>";
                     }
@@ -209,7 +209,7 @@ foreach ($productNews as $index => $productNew) {
                             <div class='product__info'>
                                     <h3>" . $product->getName() . "</h3>
                                     <h3>Đã bán:" . $sold[$index] . "</h3>
-                                    <h4>Giá: " . $topbuyItems[$index]->getPrice() / 1000 . " 000 VND</h4>
+                                    <h4>Giá: " . $topbuyItems[$index]->getPrice() . " VND</h4>
                             </div>
                         </a>";
                         }
@@ -426,7 +426,7 @@ foreach ($productNews as $index => $productNew) {
 
     $('.flashDeal-more-btn')?.addEventListener('click', () => {
         $('#flashDeal-more').style.display = 'block';
-        $('#flashDeal-more').style.height = '100vh';
+        $('#flashDeal-more').style.height = 'max-content';
         $('.flashDeal-more-btn').style.display = 'none';
     })
 </script>
