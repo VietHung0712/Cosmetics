@@ -40,7 +40,7 @@ foreach ($topbuys as $index => $topbuy) {
 }
 
 
-$sql_productNew = "SELECT p.*, pi.id AS pi_id, pi.product AS pi_product, pi.attributes, pi.price, pi.count FROM product p JOIN product_item pi ON pi.product = p.id GROUP BY p.id ORDER BY p.id DESC LIMIT 5";
+$sql_productNew = "SELECT p.*, pi.id AS pi_id, pi.product AS pi_product, pi.attributes, pi.price, pi.count FROM product p JOIN product_item pi ON pi.product = p.id GROUP BY p.id ORDER BY p.id DESC LIMIT 8";
 $result_productNew = $connect->query($sql_productNew);
 if ($result_productNew->num_rows > 0) {
     while ($row = $result_productNew->fetch_assoc()) {
@@ -124,7 +124,7 @@ foreach ($productNews as $index => $productNew) {
                             <div class='product__img transition' style='background-image: url(" . $product->getImageUrl() . ");'></div>
                             <div class='product__info'>
                                     <h3>" . $product->getName() . "</h3>
-                                    <h4>Giá: " . $productNewItems[$index]->getPrice() . " VND</h4>
+                                    <h4>Giá: " . $productNewItems[$index]->getPrice() /1000 . ".000 VND</h4>
                             </div>
                         </a>";
                     }

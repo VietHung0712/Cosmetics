@@ -56,7 +56,7 @@ foreach ($UserCart as $index => $item) {
     }
 }
 
-if(isset($_GET['export'])){
+if (isset($_GET['export'])) {
     require_once "./manager/export.php";
 }
 
@@ -115,7 +115,7 @@ if(isset($_GET['export'])){
 
             }
 
-            
+
         }
     }
 </style>
@@ -143,7 +143,7 @@ if(isset($_GET['export'])){
                         if (count($UserCart) > 0) {
                             foreach ($UserCart as $index => $item) {
                                 $discount = 0;
-                                if(isset($flashDeals)){
+                                if (isset($flashDeals)) {
                                     foreach ($flashDeals as $flashDeal) {
                                         if ($infoProduct[$index]->getId() == $flashDeal->getId()) {
                                             $discount = $flashDeal->getDiscount();
@@ -163,7 +163,7 @@ if(isset($_GET['export'])){
                         <td><img src='" . $infoProduct[$index]->getImageUrl() . "' alt=''>  </td>
                         <td>" . $infoProductItem[$index]->getAttributes() . "</td>
                         <td><input name='quantity[]' type='text' value='$item[2]' readonly></td>
-                        <td><input name='price[]' class='price' data-price='$price' type='text' value='$price' readonly></td>
+                        <td><input name='price[]' class='price' data-price='$price' type='text' value='" . $price / 1000 . ".000 VND' readonly></td>
                         <td>
                             <a href='product_select.php?this_product=" . $infoProduct[$index]->getId() . "' style='background-color: orange; color: #fff; padding: 5px;'>Chi tiết</a>
                             <a style='background-color: blue; color: #fff; padding: 5px;' href='./user_cart_update.php?this_cart=$item[0]'>Sửa</a>
@@ -175,8 +175,8 @@ if(isset($_GET['export'])){
                         }
                         ?>
                         <tr>
-                            <th>Giao đến</th>
-                            <td colspan="2"><?php echo $this_user->getAddress() ?></td>
+                            <th></th>
+                            <td colspan="2"></td>
                             <td></td>
                             <td></td>
                             <th>Tổng giá:</th>
@@ -228,7 +228,7 @@ if(isset($_GET['export'])){
             }
         });
         if (check > 0) {
-            $('form').submit();
+            window.location.href = "./user_buy.php";
         } else {
             alert("Hãy chọn ít nhận 1 sản phẩm!");
         }

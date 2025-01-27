@@ -76,8 +76,8 @@ mysqli_close($connect);
                                 id="toggleConfirmPassword" />
                             <img src="./assets/icons/form-error.svg" alt="" class="form__input-icon-error" />
                         </div>
-                        <p class="form__error">Mật khẩu ít nhất 8 ký tự</p>
-                        <!-- <p id="confirmPasswordError" class="form__error" style="display: none;">Mật khẩu không khớp</p> -->
+                        <!-- <p class="form__error">Mật khẩu ít nhất 8 ký tự</p> -->
+                        <p id="confirmPasswordError" class="form__error" style="display: none;">Mật khẩu không khớp</p>
                     </div>
 
                     <div class="form__group auth__btn-group">
@@ -110,19 +110,19 @@ mysqli_close($connect);
 
         $('.form__submit-btn').addEventListener('click', () => {
             temp = true;
-            // mess = "";
+            mess = "";
 
-            // listUserName.forEach(element => {
-            //     if ($('.input_username').value == element) {
-            //         temp = false;
-            //         mess += "Tên tài khoản đã tồn tại!\n";
-            //     }
-            // });
+            listUserName.forEach(element => {
+                if ($('.input_username').value == element) {
+                    temp = false;
+                    mess += "Tên tài khoản đã tồn tại!\n";
+                }
+            });
 
-            // if ($('#password').value != $('#confirmPassword').value) {
-            //     temp = false;
-            //     mess += "Mật khẩu không khớp với xác thực!\n"
-            // }
+            if ($('#password').value != $('#confirmPassword').value) {
+                temp = false;
+                mess += "Mật khẩu không khớp với xác thực!\n"
+            }
 
 
 
