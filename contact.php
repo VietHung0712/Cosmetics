@@ -16,20 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tilte = $_POST['tilte'];
     $content = $_POST['content'];
 
-    $sql = "INSERT INTO contact VALUES ('', ?, ?, ?)";
-    $result = mysqli_prepare($connect, $sql);
-    if ($result) {
-        $result->bind_param("iss", $user_id, $tilte, $content);
-        if ($result->execute()) {
-            header("Location: ./contact.php");
-            exit();
-        } else {
-            echo "<script>alert('Đã có lỗi!')</script>";
-        }
-        $result->close();
-    } else {
-        echo "<script>alert('Không thể chuẩn bị truy vấn!')</script>";
-    }
+    $sql = "INSERT INTO contact VALUES ('','$user_id', '$tilte', '$content')";
+    $result = mysqli_query($connect, $sql);
 }
 ?>
 <!DOCTYPE html>
@@ -495,7 +483,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script src="./js/function.js"></script>
 <script>
-    $('.btn-submit').addEventListener('click', () => {
+    $('.btn-submit').addEventListener('click', ()=>{
         alert("Đã gửi phản ánh!");
         $('form').submit();
     })

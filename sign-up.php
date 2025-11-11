@@ -9,7 +9,6 @@ if ($result->num_rows > 0) {
         $username[] = $row['username'];
     }
 }
-mysqli_close($connect);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,8 +75,7 @@ mysqli_close($connect);
                                 id="toggleConfirmPassword" />
                             <img src="./assets/icons/form-error.svg" alt="" class="form__input-icon-error" />
                         </div>
-                        <!-- <p class="form__error">Mật khẩu ít nhất 8 ký tự</p> -->
-                        <p id="confirmPasswordError" class="form__error" style="display: none;">Mật khẩu không khớp</p>
+                        <p class="form__error">Mật khẩu ít nhất 8 ký tự</p>
                     </div>
 
                     <div class="form__group auth__btn-group">
@@ -86,7 +84,7 @@ mysqli_close($connect);
                 </form>
                 <p class="auth__text">
                     Bạn đã có tài khoản chưa?
-                    <a href="./sign-in.php" class="auth__link auth__text-link">Đăng nhập</a>
+                    <a href="./sign-in.html" class="auth__link auth__text-link">Đăng nhập</a>
                 </p>
                 <p class="auth__text">
                     <a href="./index.php" class="auth__link auth__text-link">Trang chủ</a>

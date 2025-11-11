@@ -3,7 +3,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once "./php/connect.php";
     $email = $_POST['email'];
     $password = $_POST['password'];
-    mysqli_close($connect);
 }
 ?>
 <!DOCTYPE html>
@@ -64,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     input[type="text"],
     input[type="email"],
-    input[type="number"],
+    input[type="tel"],
     input[type="date"],
     input[type="file"] {
         width: 100%;
@@ -128,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </tr>
                 <tr>
                     <th>Điện thoại</th>
-                    <td><input type="number" id="phone" name="phone" required pattern="^0[0-9]{9}$" placeholder="Nhập 10 chữ số"></td>
+                    <td><input type="tel" id="phone" name="phone" required pattern="^0[0-9]{9}$" placeholder="Nhập 10 chữ số"></td>
                 </tr>
                 <tr>
                     <th>Ngày sinh</th>
@@ -137,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <tr>
                     <th>Ảnh đại diện</th>
                     <td>
-                        <input type="file" name="" id="imageFile">
+                        <input type="file" name="" id="imageFile" required>
                         <input type="text" name="image_url" id="imageInput" readonly>
                     </td>
                 </tr>

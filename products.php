@@ -24,24 +24,6 @@ foreach ($products as $index => $product) {
     $productImage[$index] = ArrayProductImages($connect, $product->getId());
 }
 
-$page = 0;
-$this_page = 0;
-if (isset($products) && count($products) > 0) {
-    $page = ceil(count($products) / 16);
-    $this_page = 1;
-}
-
-// if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['control']) && isset($_GET['past_page'])) {
-//     $this_page = $_GET['past_page'];
-//     $control = $_POST['control'];
-//     if ($control === 'previous' && $this_page > 1) {
-//         $this_page -= 1;
-//     } elseif ($control === 'next' && $this_page < $page) {
-//         $this_page += 1;
-//     } else {
-
-//     }
-// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,7 +53,7 @@ if (isset($products) && count($products) > 0) {
             </div>
         </div>
         <div class="products__bannerBottom">
-            <a href="product_select.php?this_product=3" style="background-image: url(./images/judydollPN01_banner.webp);"></a>
+            <a href="product_select.php?this_product=judydollPN01" style="background-image: url(./images/judydollPN01_banner.webp);"></a>
             <button><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div id="searchForm" class="products__filter">
@@ -110,9 +92,9 @@ if (isset($products) && count($products) > 0) {
         <div class="products__main">
             <h4 style="display: none; font-size: 1vw;">Không tìm thấy kết quả nào!</h4>
             <?php
-            if (isset($products) && count($products) > 0) {
+            if (count($products) > 0) {
                 foreach ($products as $index => $product) {
-
+                    
                     $quantityItem = 0;
                     if (isset($quantity[$index])) {
                         $quantityItem = $quantity[$index];
@@ -131,18 +113,12 @@ if (isset($products) && count($products) > 0) {
                             <h3>" . $product->getName() . "</h3>
                             <h3>" . RankNumberToStar($rank[$index]) . "</h3>
                             <h3>Đã bán: " . $quantityItem . "</h3>
-                            <h4>Giá: " . $productsItems[$index]->getPrice()/1000 . ".000 VND</h4>
+                            <h4>Giá: " . $productsItems[$index]->getPrice() / 1000 . " 000 VND</h4>
                         </div>
                     </a>";
                 }
             }
             ?>
-        </div>
-
-        <div class="products__tabs">
-            <button class="btnPre"><i class="fa-solid fa-angle-left"></i></button>
-            <p><span class="thisPage">1</span>/<?php echo $page; ?></p>
-            <button class="btnNext"><i class="fa-solid fa-angle-right"></i></button>
         </div>
         <a class="ScrollToTop" href="#"><i class="fa-solid fa-angles-up"></i></a>
     </div>
@@ -246,8 +222,6 @@ if (isset($products) && count($products) > 0) {
             productsElement.forEach((product) => {
                 parent.appendChild(product);
             });
-            this_page = 1;
-            productTab();
         });
     });
 
@@ -268,8 +242,6 @@ if (isset($products) && count($products) > 0) {
         productsElement.forEach((product) => {
             parent.appendChild(product);
         });
-        this_page = 1;
-        productTab();
     });
 
 
@@ -314,46 +286,5 @@ if (isset($products) && count($products) > 0) {
 
     $('.products__bannerBottom>button').addEventListener('click', () => {
         $('.products__bannerBottom').style.display = 'none';
-    });
-
-
-    let this_page = 1;
-
-    function productTab() {
-        $$('.products__main .product').forEach((product, index) => {
-            if (index < 16 * this_page && index >= 16 * (this_page - 1)) {
-                product.style.display = 'block';
-            } else {
-                product.style.display = 'none';
-            }
-        });
-    }
-
-    window.addEventListener("load", function() {
-        productTab();
-    });
-
-    $('.btnNext').addEventListener('click', function() {
-        if (this_page < <?php echo $page ?>) {
-            this_page++;
-            $('.thisPage').innerHTML = this_page;
-        }
-        productTab();
-        $('#searchForm').scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    });
-
-    $('.btnPre').addEventListener('click', function() {
-        if (this_page > 1) {
-            this_page--;
-            $('.thisPage').innerHTML = this_page;
-        }
-        productTab();
-        $('#searchForm').scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    });
+    })
 </script>

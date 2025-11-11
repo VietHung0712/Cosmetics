@@ -21,9 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo "<script>alert('Sai tên đăng nhập hoặc mật khẩu!');</script>";
     }
+
     $stmt->close();
+    mysqli_close($connect);
 }
-mysqli_close($connect);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

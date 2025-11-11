@@ -73,7 +73,6 @@ require_once "./php/Manager_Brands.php";
                         foreach ($brandArr as $brand) {
                             echo "<a href='brand_select.php?this_brand=" . $brand->getId() . "' class='brand transition'
                             data-id='" . $brand->getId() . "'
-                            data-name='" . $brand->getName() . "'
                             data-country='" . $brand->getAddress() . "'>
                             <div class='brand__background' style='background-image: url(" . $brand->getBackgroundUrl() . ");'></div>
                             <img class='transition' src='" . $brand->getIconUrl() . "' alt=''>
@@ -121,24 +120,14 @@ require_once "./php/Manager_Brands.php";
             const brandsElement = Array.from($$('.brands__list--grid>.brand'));
             brandsElement.sort((a, b) => {
                 return index === 0 ?
-                    a.dataset.name.localeCompare(b.dataset.name) :
-                    b.dataset.name.localeCompare(a.dataset.name);
+                    a.dataset.id.localeCompare(b.dataset.id) :
+                    b.dataset.id.localeCompare(a.dataset.id);
             });
             const parent = $('.brands__list--grid');
             parent.innerHTML = '';
             brandsElement.forEach(brand => parent.appendChild(brand));
         });
     });
-
-    window.addEventListener('load', () => {
-        const brandsElement = Array.from($$('.brands__list--grid>.brand'));
-        brandsElement.sort((a, b) => {
-            return index = a.dataset.name.localeCompare(b.dataset.name);
-        });
-        const parent = $('.brands__list--grid');
-        parent.innerHTML = '';
-        brandsElement.forEach(brand => parent.appendChild(brand));
-    })
 
     const selectElement = $('.brands__filter--country>select');
     const optionValues = Array.from(selectElement.options).map(option => option.value);

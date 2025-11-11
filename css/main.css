@@ -148,29 +148,17 @@ section {
         & .productNew__border {
             width: 100%;
             margin: auto;
-            height: max-content;
-            display: grid;
-            gap: 1vw;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: 60vh;
-        }
-    }
-
-    & #productNew{
-        height: max-content;
-    }
-    #flashDeal-more{
-        width: 95%;
-        margin: auto;
-        & .flashDeal-more__border {
-            width: 100%;
-            margin: auto;
             height: 75%;
             display: grid;
             gap: 1vw;
             grid-template-columns: repeat(5, 1fr);
             grid-auto-rows: 60vh;
         }
+    }
+
+    #flashDeal-more{
+        width: 95%;
+        margin: auto;
     }
 
     & #flashDeal {
@@ -633,27 +621,6 @@ section {
         grid-template-columns: repeat(4, 1fr);
         grid-auto-rows: 60vh;
         gap: 1vw;
-    }
-
-    .products__tabs{
-        height: 20vh;
-        width: calc(100% - 16vw);
-        margin-left: 15vw;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        & button{
-            width: 2vw;
-            height: 2vw;
-            background-color: var(--bgcolor-);
-            color: #fff;
-        }
-
-        & p{
-            width: 5vw;
-            text-align: center;
-        }
     }
 }
 
